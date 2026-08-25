@@ -20,20 +20,20 @@ const VIDEO_CARDS = [
   },
   {
     id: 1,
-    title: "Futuristic neon sneaker reveal with kinetic particle lighting",
-    fullPrompt: "Commercial video of futuristic neon sneaker on illuminated cyberpunk podium with dynamic volumetric glow, 4K HDR",
-    image: Images.heroSneaker,
+    title: "Dusk metropolitan canyon with glowing traffic and architectural depth",
+    fullPrompt: "Cinematic tracking shot through wet metropolitan avenue at blue hour with reflective asphalt and glowing city lights, 4K HDR",
+    image: Images.heroCyberpunkChase,
     videoUrl: null,
-    duration: "00:06",
-    tag: "Neon Product",
-    presetName: "Neon Product",
+    duration: "00:10",
+    tag: "Urban Twilight",
+    presetName: "City Street",
     audioSynced: true,
   },
   {
     id: 2,
     title: "Cyberpunk warrior walking through rainy neon Tokyo at night",
     fullPrompt: "Cyberpunk warrior walking through rainy neon street with reflective asphalt and ambient synth soundtrack",
-    image: Images.heroCyberpunkChase,
+    image: Images.bannerScifiSingularity,
     videoUrl: Videos.v2,
     duration: "00:10",
     tag: "Sci-Fi Action",
@@ -68,6 +68,19 @@ export default function HeroSection() {
     }, 7500);
     return () => clearInterval(timer);
   }, [isAutoCycling, isHeroVisible]);
+
+  // Synchronize video play/pause with hero viewport visibility
+  useEffect(() => {
+    Object.values(videoRefs.current).forEach((videoEl) => {
+      if (videoEl) {
+        if (isHeroVisible) {
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.pause();
+        }
+      }
+    });
+  }, [isHeroVisible]);
 
   // Keep input text smoothly in sync with active video
   useEffect(() => {
@@ -209,14 +222,16 @@ export default function HeroSection() {
                     onClick={() => handleSelectPreset(idx)}
                   >
                     <div className="card-media-wrapper">
-                      {isFeatured && isHeroVisible && typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
+                      {typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
                         <video
                           ref={(el) => {
                             if (el) {
                               videoRefs.current[card.id] = el;
                               el.muted = true;
                               el.defaultMuted = true;
-                              el.play().catch(() => {});
+                              if (isHeroVisible) {
+                                el.play().catch(() => {});
+                              }
                             }
                           }}
                           src={card.videoUrl}
@@ -229,12 +244,14 @@ export default function HeroSection() {
                           className="theater-media"
                           onLoadedMetadata={(e) => {
                             e.target.muted = true;
-                            e.target.play().catch(() => {});
+                            if (isHeroVisible) {
+                              e.target.play().catch(() => {});
+                            }
                           }}
                         />
                       ) : (
                         <img 
-                          src={card.videoUrl || card.image} 
+                          src={card.image} 
                           alt={card.title} 
                           className="theater-media" 
                           loading="lazy" 

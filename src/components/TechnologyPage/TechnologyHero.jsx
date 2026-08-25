@@ -144,7 +144,7 @@ export default function TechnologyHero({ onExploreStack, onSeeArchitecture }) {
               ) : (
                 <img 
                   key={activeSample.tag}
-                  src={activeSample.videoUrl || activeSample.image} 
+                  src={activeSample.image} 
                   alt="AI Generated Masterpiece" 
                   className={`tech-hero-main-img ${isGenerating ? 'generating-pulse' : ''}`}
                 />
