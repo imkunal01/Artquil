@@ -184,7 +184,7 @@ const RippleDistortion = ({
     const renderer = new Renderer({
       alpha: false,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: Math.min(window.devicePixelRatio || 1, 1.25)
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
@@ -207,6 +207,8 @@ const RippleDistortion = ({
     let gifFrames = [];
     let currentGifIndex = 0;
     let lastGifFrameTime = performance.now();
+    let isVisible = true;
+    let isPageVisible = !document.hidden;
 
     const isVideoSrc = typeof src === 'string' && (
       src.endsWith('.mp4') ||
@@ -248,10 +250,10 @@ const RippleDistortion = ({
       videoEl.addEventListener('loadeddata', syncDimensions);
       videoEl.addEventListener('canplay', () => {
         syncDimensions();
-        videoEl.play().catch(() => {});
+        if (isVisible && isPageVisible) videoEl.play().catch(() => {});
       });
 
-      videoEl.play().catch(() => {});
+      if (isVisible && isPageVisible) videoEl.play().catch(() => {});
     } else if (isGifSrc && typeof window.ImageDecoder !== 'undefined') {
       (async () => {
         try {
@@ -456,7 +458,7 @@ const RippleDistortion = ({
     let previousTime = 0;
 
     const loop = now => {
-      raf = requestAnimationFrame(loop);
+      if (disposed) return;
       const delta = previousTime ? Math.min(0.05, (now - previousTime) / 1000) : 0;
       previousTime = now;
       const cfg = configRef.current;
@@ -515,12 +517,53 @@ const RippleDistortion = ({
 
       renderer.render({ scene: waveMesh, target: displacementTarget, clear: true });
       renderer.render({ scene: compositeMesh });
+
+      if (isVisible && isPageVisible) {
+        raf = requestAnimationFrame(loop);
+      } else {
+        raf = 0;
+      }
     };
-    raf = requestAnimationFrame(loop);
+
+    const tryStart = () => {
+      if (isVisible && isPageVisible && raf === 0) {
+        if (videoEl && videoEl.paused) videoEl.play().catch(() => {});
+        raf = requestAnimationFrame(loop);
+      }
+    };
+
+    const tryStop = () => {
+      if (raf !== 0) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+      if (videoEl && !videoEl.paused) {
+        videoEl.pause();
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        isVisible ? tryStart() : tryStop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(mount);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      isPageVisible ? tryStart() : tryStop();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    tryStart();
 
     return () => {
       disposed = true;
-      cancelAnimationFrame(raf);
+      tryStop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
       ro.disconnect();
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerdown', onDown);

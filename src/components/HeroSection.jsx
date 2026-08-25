@@ -3,6 +3,7 @@ import './HeroSection.css';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Images } from '../assets/images';
 import { Videos } from '../assets/videos';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import MoltenMetal from './MoltenMetal';
 
 const VIDEO_CARDS = [
@@ -11,7 +12,7 @@ const VIDEO_CARDS = [
     title: "Cinematic coastal drone flight over golden hour ocean surf",
     fullPrompt: "Cinematic FPV drone flight sweeping over golden hour coastal breakers with synchronized orchestral score, 4K 60fps",
     image: Images.heroDroneWaterfall,
-    videoUrl: Videos.coastalDrone,
+    videoUrl: Videos.v1,
     duration: "00:08",
     tag: "Cinematic Film",
     presetName: "Drone Sweep",
@@ -19,13 +20,13 @@ const VIDEO_CARDS = [
   },
   {
     id: 1,
-    title: "Luxury botanic macro reveal with slow-motion fluid light",
-    fullPrompt: "Commercial video of luxury flower petals blooming with slow-motion water droplets and whisper voiceover, 4K HDR",
-    image: Images.heroLuxuryCommercial,
-    videoUrl: Videos.flowerTimelapse,
+    title: "Futuristic neon sneaker reveal with kinetic particle lighting",
+    fullPrompt: "Commercial video of futuristic neon sneaker on illuminated cyberpunk podium with dynamic volumetric glow, 4K HDR",
+    image: Images.heroSneaker,
+    videoUrl: null,
     duration: "00:06",
-    tag: "Product Macro",
-    presetName: "Product Macro",
+    tag: "Neon Product",
+    presetName: "Neon Product",
     audioSynced: true,
   },
   {
@@ -33,7 +34,7 @@ const VIDEO_CARDS = [
     title: "Cyberpunk warrior walking through rainy neon Tokyo at night",
     fullPrompt: "Cyberpunk warrior walking through rainy neon street with reflective asphalt and ambient synth soundtrack",
     image: Images.heroCyberpunkChase,
-    videoUrl: Videos.sceneCyber,
+    videoUrl: Videos.v2,
     duration: "00:10",
     tag: "Sci-Fi Action",
     presetName: "Cyberpunk Action",
@@ -41,13 +42,13 @@ const VIDEO_CARDS = [
   },
   {
     id: 3,
-    title: "Majestic alpine wildlife running across snowy mountain valley",
-    fullPrompt: "Ultra slow-motion cinematic tracking shot of horses galloping across snowy alpine valley in 8K resolution",
-    image: Images.heroArchitecturalTour,
-    videoUrl: Videos.snowHorses,
+    title: "Luminescent neon city skyline with flying vehicles and glowing reflections",
+    fullPrompt: "Cinematic hyper-detailed aerial flight through futuristic neon city skyscrapers at night with volumetric fog and synthwave soundtrack, 4K HDR",
+    image: Images.videoCyberpunk,
+    videoUrl: null,
     duration: "00:07",
-    tag: "Alpine Wildlife",
-    presetName: "Alpine Motion",
+    tag: "Neon City",
+    presetName: "Neon City",
     audioSynced: true,
   },
 ];
@@ -56,16 +57,17 @@ export default function HeroSection() {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [inputValue, setInputValue] = useState(VIDEO_CARDS[0].fullPrompt);
   const [isAutoCycling, setIsAutoCycling] = useState(true);
+  const [heroSectionRef, isHeroVisible] = useScrollReveal({ threshold: 0.05, rootMargin: '50px 0px 50px 0px' });
   const videoRefs = useRef({});
 
-  // Smooth, relaxed auto-cycle duration (7.5s) - pauses on user hover
+  // Smooth, relaxed auto-cycle duration (7.5s) - pauses on user hover or when offscreen
   useEffect(() => {
-    if (!isAutoCycling) return;
+    if (!isAutoCycling || !isHeroVisible) return;
     const timer = setInterval(() => {
       setActiveCardIndex((prev) => (prev + 1) % VIDEO_CARDS.length);
     }, 7500);
     return () => clearInterval(timer);
-  }, [isAutoCycling]);
+  }, [isAutoCycling, isHeroVisible]);
 
   // Keep input text smoothly in sync with active video
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function HeroSection() {
   const activeCard = VIDEO_CARDS[activeCardIndex];
 
   return (
-    <section className="hero-section">
+    <section className="hero-section" ref={heroSectionRef}>
       {/* Background Ambient Glows & Dynamic Colorful Molten Metal Fluid Animation */}
       <div className="hero-bg-glows">
         <div className="hero-molten-bg-wrapper">
@@ -90,19 +92,19 @@ export default function HeroSection() {
             color3="#d8b4fe"
             speed={0.28}
             scale={3.2}
-            detail={3}
-            glow={2.0}
+            detail={2}
+            glow={1.8}
             coreSize={0.14}
             swirl={1.3}
             fold={-0.24}
             blackPoint={0.04}
-            brightness={1.5}
+            brightness={1.4}
             colorMode="molten"
             grain={true}
-            grainIntensity={0.04}
+            grainIntensity={0.03}
             mouseInteraction={false}
             mouseStrength={0}
-            opacity={0.88}
+            opacity={0.85}
           />
         </div>
         <div className="glow-blob glow-teal" />
@@ -207,7 +209,7 @@ export default function HeroSection() {
                     onClick={() => handleSelectPreset(idx)}
                   >
                     <div className="card-media-wrapper">
-                      {typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
+                      {isFeatured && isHeroVisible && typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
                         <video
                           ref={(el) => {
                             if (el) {
@@ -218,11 +220,12 @@ export default function HeroSection() {
                             }
                           }}
                           src={card.videoUrl}
+                          poster={card.image}
                           autoPlay
                           loop
                           muted
                           playsInline
-                          preload="auto"
+                          preload="metadata"
                           className="theater-media"
                           onLoadedMetadata={(e) => {
                             e.target.muted = true;
@@ -230,7 +233,13 @@ export default function HeroSection() {
                           }}
                         />
                       ) : (
-                        <img src={card.videoUrl || card.image} alt={card.title} className="theater-media" />
+                        <img 
+                          src={card.videoUrl || card.image} 
+                          alt={card.title} 
+                          className="theater-media" 
+                          loading="lazy" 
+                          decoding="async" 
+                        />
                       )}
 
                       <div className="theater-media-overlay" />

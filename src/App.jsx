@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -15,13 +15,30 @@ import PricingPlans from './components/PricingPlans';
 import FAQSection from './components/FAQSection';
 import CTABanner from './components/CTABanner';
 import Footer from './components/Footer';
-import ProductPage from './components/ProductPage/ProductPage';
-import TechnologyPage from './components/TechnologyPage/TechnologyPage';
-import DevelopersPage from './components/DevelopersPage/DevelopersPage';
-import ResearchPage from './components/ResearchPage/ResearchPage';
-import AboutPage from './components/AboutPage/AboutPage';
-import ContactPage from './components/ContactPage/ContactPage';
-import AuthModal from './components/AuthModal/AuthModal';
+
+// Code-split secondary routes & modals for instant initial bundle delivery
+const ProductPage = lazy(() => import('./components/ProductPage/ProductPage'));
+const TechnologyPage = lazy(() => import('./components/TechnologyPage/TechnologyPage'));
+const DevelopersPage = lazy(() => import('./components/DevelopersPage/DevelopersPage'));
+const ResearchPage = lazy(() => import('./components/ResearchPage/ResearchPage'));
+const AboutPage = lazy(() => import('./components/AboutPage/AboutPage'));
+const ContactPage = lazy(() => import('./components/ContactPage/ContactPage'));
+const AuthModal = lazy(() => import('./components/AuthModal/AuthModal'));
+
+const PageLoader = () => (
+  <div style={{
+    minHeight: '60vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#a855f7',
+    fontSize: '14px',
+    fontWeight: 600,
+    letterSpacing: '1px'
+  }}>
+    Loading Artquil Engine...
+  </div>
+);
 
 function parseCurrentRoute() {
   const hash = window.location.hash.toLowerCase().replace('#', '');
@@ -129,89 +146,95 @@ function App() {
 
       <main>
         {/* 2. Routing Pages */}
-        {currentPage === 'technology' ? (
-          /* Dedicated Technology Architecture & Multi-Model Engine Page (Screenshots 1, 2, 3) */
-          <TechnologyPage 
-            onNavigateHome={() => handleNavigate('home', null)}
-            onOpenAuth={() => handleOpenAuth('signup')}
-          />
-        ) : currentPage === 'product' ? (
-          /* Dedicated Product Page (Suite, Hero, Upscale Slider, Sandbox, Specs) */
-          <ProductPage 
-            onNavigateHome={() => handleNavigate('home', null)}
-            onOpenAuth={() => handleOpenAuth('signup')}
-          />
-        ) : currentPage === 'developers' ? (
-          /* Developers & REST API Docs Page */
-          <DevelopersPage 
-            onOpenAuth={() => handleOpenAuth('signup')}
-          />
-        ) : currentPage === 'research' ? (
-          /* Research & AI Labs Page */
-          <ResearchPage />
-        ) : currentPage === 'about' ? (
-          /* About Us & Vision Page */
-          <AboutPage 
-            onOpenAuth={() => handleOpenAuth('signup')}
-          />
-        ) : currentPage === 'contact' ? (
-          /* Contact & Enterprise Inquiries Page */
-          <ContactPage />
-        ) : (
-          /* Main Landing Page */
-          <>
-            {/* Hero Section: 3D Video Shuffling Deck & Prompt Studio */}
-            <HeroSection />
+        <Suspense fallback={<PageLoader />}>
+          {currentPage === 'technology' ? (
+            /* Dedicated Technology Architecture & Multi-Model Engine Page */
+            <TechnologyPage 
+              onNavigateHome={() => handleNavigate('home', null)}
+              onOpenAuth={() => handleOpenAuth('signup')}
+            />
+          ) : currentPage === 'product' ? (
+            /* Dedicated Product Page (Suite, Hero, Upscale Slider, Sandbox, Specs) */
+            <ProductPage 
+              onNavigateHome={() => handleNavigate('home', null)}
+              onOpenAuth={() => handleOpenAuth('signup')}
+            />
+          ) : currentPage === 'developers' ? (
+            /* Developers & REST API Docs Page */
+            <DevelopersPage 
+              onOpenAuth={() => handleOpenAuth('signup')}
+            />
+          ) : currentPage === 'research' ? (
+            /* Research & AI Labs Page */
+            <ResearchPage />
+          ) : currentPage === 'about' ? (
+            /* About Us & Vision Page */
+            <AboutPage 
+              onOpenAuth={() => handleOpenAuth('signup')}
+            />
+          ) : currentPage === 'contact' ? (
+            /* Contact & Enterprise Inquiries Page */
+            <ContactPage />
+          ) : (
+            /* Main Landing Page */
+            <>
+              {/* Hero Section: 3D Video Shuffling Deck & Prompt Studio */}
+              <HeroSection />
 
-            {/* Video Styles Showcase: One prompt. Any video style you can imagine. */}
-            <StyleShowcase />
+              {/* Video Styles Showcase: One prompt. Any video style you can imagine. */}
+              <StyleShowcase />
 
-            {/* Social / Distribution Ecosystem */}
-            <PublishEverywhere />
+              {/* Social / Distribution Ecosystem */}
+              <PublishEverywhere />
 
-            {/* Large Video Feature Spotlight Banner (Ripple Distortion) */}
-            <VideoFeatureBanner />
+              {/* Large Video Feature Spotlight Banner (Ripple Distortion) */}
+              <VideoFeatureBanner />
 
-            {/* How It Works (Steps 1, 2, 3: Video Prompt, Camera Styles, Synced Audio) */}
-            <HowItWorks />
+              {/* How It Works (Steps 1, 2, 3: Video Prompt, Camera Styles, Synced Audio) */}
+              <HowItWorks />
 
-            {/* Platform Overview (Create, Edit, Scale, Integrate) */}
-            <PlatformOverview />
+              {/* Platform Overview (Create, Edit, Scale, Integrate) */}
+              <PlatformOverview />
 
-            {/* Real Results & ROI Metric Cards (-85%, 10x, ₹0) */}
-            <RealResults />
+              {/* Real Results & ROI Metric Cards (-85%, 10x, ₹0) */}
+              <RealResults />
 
-            {/* Why Teams Choose Artquil (6 Features Grid) */}
-            <WhyChooseUs />
+              {/* Why Teams Choose Artquil (6 Features Grid) */}
+              <WhyChooseUs />
 
-            {/* Who It's For (AI for Everyone's Creativity: 6 Audiences) */}
-            <AudienceGrid />
+              {/* Who It's For (AI for Everyone's Creativity: 6 Audiences) */}
+              <AudienceGrid />
 
-            {/* Testimonials & Social Proof */}
-            <Testimonials />
+              {/* Testimonials & Social Proof */}
+              <Testimonials />
 
-            {/* Pricing Plans (Simple Plans. No Surprises.) */}
-            <PricingPlans />
+              {/* Pricing Plans (Simple Plans. No Surprises.) */}
+              <PricingPlans />
 
-            {/* FAQ Section (Accordion) */}
-            <FAQSection />
+              {/* FAQ Section (Accordion) */}
+              <FAQSection />
 
-            {/* CTA Banner */}
-            <CTABanner />
-          </>
-        )}
+              {/* CTA Banner */}
+              <CTABanner />
+            </>
+          )}
+        </Suspense>
       </main>
 
       {/* Company & Product Footer */}
       <Footer onNavigate={handleNavigate} />
 
       {/* Global Auth Modal for Log In & Sign Up */}
-      <AuthModal 
-        isOpen={authModalOpen}
-        initialMode={authModalMode}
-        onClose={() => setAuthModalOpen(false)}
-        onAuthSuccess={handleAuthSuccess}
-      />
+      <Suspense fallback={null}>
+        {authModalOpen && (
+          <AuthModal 
+            isOpen={authModalOpen}
+            initialMode={authModalMode}
+            onClose={() => setAuthModalOpen(false)}
+            onAuthSuccess={handleAuthSuccess}
+          />
+        )}
+      </Suspense>
     </div>
   );
 }

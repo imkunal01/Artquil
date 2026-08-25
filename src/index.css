@@ -171,4 +171,33 @@ button {
   transition: all 0.75s ease-in-out;
 }
 
+/* ==========================================================================
+   Content Visibility and Performance Containment for Mid/Low Spec Devices
+   ========================================================================== */
+.platform-overview-section,
+.real-results-section,
+.why-choose-section,
+.audience-grid-section,
+.testimonials-section,
+.pricing-section,
+.faq-section,
+.cta-banner-section,
+.site-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+/* Hardware Layer GPU Isolation */
+.audience-card,
+.result-card,
+.why-feat-card,
+.testimonial-card,
+.pricing-card,
+.pillar-card,
+.theater-card,
+.showcase-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 

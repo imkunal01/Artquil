@@ -1,6 +1,7 @@
 import React from 'react';
 import './PublishEverywhere.css';
 import { ShoppingBag, Globe } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const InstagramIcon = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -65,8 +66,6 @@ const PLATFORMS = [
   { name: 'Behance', icon: <BehanceIcon /> },
   { name: 'Figma', icon: <FigmaIcon /> },
 ];
-
-import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function PublishEverywhere() {
   const [sectionRef, isVisible] = useScrollReveal({ threshold: 0.2 });

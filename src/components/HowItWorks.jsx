@@ -89,30 +89,44 @@ export default function HowItWorks() {
   const velocityRef = useRef(0);
   const animFrameRef = useRef(0);
   const isPausedRef = useRef(false);
-  isPausedRef.current = isPaused;
+  const isVisibleRef = useRef(false);
+  const isRunningRef = useRef(false);
 
-  // Auto-advance target angle smoothly every 5.5 seconds (gives plenty of time to view)
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isPausedRef.current) {
-        targetAngleRef.current += Math.PI / 2;
-      }
-    }, 5500);
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
 
-    return () => clearInterval(timer);
-  }, []);
-
-  // 60FPS Silky-Smooth Cushioned Spring Physics
   useEffect(() => {
+    isVisibleRef.current = isVisible;
+  }, [isVisible]);
+
+  const startAnimationLoop = () => {
+    if (isRunningRef.current) return;
+    isRunningRef.current = true;
+
     const loop = () => {
+      if (!isVisibleRef.current) {
+        isRunningRef.current = false;
+        return;
+      }
+
       const diff = targetAngleRef.current - currentAngleRef.current;
-      // Spring force + air damping for an elegant, cinematic ease-in-out glide
       velocityRef.current = velocityRef.current * 0.88 + diff * 0.016;
       currentAngleRef.current += velocityRef.current;
-      
-      setRotationAngle(currentAngleRef.current);
 
-      // Keep active index dynamically synchronized with whichever card is closest to front center
+      // Check if animation has reached resting equilibrium
+      if (Math.abs(diff) < 0.0005 && Math.abs(velocityRef.current) < 0.0001) {
+        currentAngleRef.current = targetAngleRef.current;
+        velocityRef.current = 0;
+        setRotationAngle(currentAngleRef.current);
+        const currentClosestStep = Math.round(currentAngleRef.current / (Math.PI / 2)) % STEPS_CARDS.length;
+        const normalized = (currentClosestStep + STEPS_CARDS.length) % STEPS_CARDS.length;
+        setActiveIndex(normalized);
+        isRunningRef.current = false;
+        return;
+      }
+
+      setRotationAngle(currentAngleRef.current);
       const currentClosestStep = Math.round(currentAngleRef.current / (Math.PI / 2)) % STEPS_CARDS.length;
       const normalized = (currentClosestStep + STEPS_CARDS.length) % STEPS_CARDS.length;
       setActiveIndex(normalized);
@@ -121,8 +135,32 @@ export default function HowItWorks() {
     };
 
     animFrameRef.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animFrameRef.current);
+  };
+
+  // Auto-advance target angle smoothly every 5.5 seconds (only when visible and not hovered)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isPausedRef.current && isVisibleRef.current) {
+        targetAngleRef.current += Math.PI / 2;
+        startAnimationLoop();
+      }
+    }, 5500);
+
+    return () => clearInterval(timer);
   }, []);
+
+  // Trigger animation loop when section enters viewport
+  useEffect(() => {
+    if (isVisible) {
+      startAnimationLoop();
+    } else {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      isRunningRef.current = false;
+    }
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, [isVisible]);
 
   const goToStep = (index) => {
     const currentStepIndex = Math.round(targetAngleRef.current / (Math.PI / 2)) % STEPS_CARDS.length;
@@ -131,14 +169,17 @@ export default function HowItWorks() {
     if (delta > 2) delta -= 4;
     if (delta < -2) delta += 4;
     targetAngleRef.current += delta * (Math.PI / 2);
+    startAnimationLoop();
   };
 
   const handleNext = () => {
     targetAngleRef.current += Math.PI / 2;
+    startAnimationLoop();
   };
 
   const handlePrev = () => {
     targetAngleRef.current -= Math.PI / 2;
+    startAnimationLoop();
   };
 
   const currentStep = STEPS_CARDS[activeIndex];
@@ -304,21 +345,15 @@ export default function HowItWorks() {
               >
                 {/* Media Content */}
                 <div className="wheel-card-media-box">
-                  {typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
+                  {isFrontActive && isVisible && typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
                     <video
-                      ref={(el) => {
-                        if (el) {
-                          el.muted = true;
-                          el.defaultMuted = true;
-                          el.play().catch(() => {});
-                        }
-                      }}
                       src={card.videoUrl}
+                      poster={card.image}
                       autoPlay
                       loop
                       muted
                       playsInline
-                      preload="auto"
+                      preload="metadata"
                       className="wheel-card-media"
                       onLoadedMetadata={(e) => {
                         e.target.muted = true;
@@ -326,7 +361,13 @@ export default function HowItWorks() {
                       }}
                     />
                   ) : (
-                    <img src={card.videoUrl || card.image} alt={card.headline} className="wheel-card-media" loading="lazy" />
+                    <img 
+                      src={card.image} 
+                      alt={card.headline} 
+                      className="wheel-card-media" 
+                      loading="lazy" 
+                      decoding="async"
+                    />
                   )}
 
                   <div className="wheel-card-overlay" />

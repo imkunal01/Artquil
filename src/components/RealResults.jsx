@@ -1,7 +1,6 @@
 import React from 'react';
 import './RealResults.css';
 import { Images } from '../assets/images';
-import { Videos } from '../assets/videos';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { Film } from 'lucide-react';
 
@@ -12,7 +11,6 @@ const RESULTS_DATA = [
     label: 'Creative & production cost',
     desc: 'E-commerce & direct-to-consumer brands replace slow, expensive monthly studio shoots with automated prompt-to-video pipelines.',
     image: Images.resultsBrandCommercial,
-    videoUrl: Videos.flowerTimelapse,
     tag: 'E-Commerce Commercial',
   },
   {
@@ -21,7 +19,6 @@ const RESULTS_DATA = [
     label: 'Faster video output',
     desc: 'Marketing agencies generate dozens of cinematic ad variants weekly with prompt presets, batch rendering, and synchronized audio.',
     image: Images.audienceMarketingTeam,
-    videoUrl: Videos.cldMotion,
     tag: 'Ad Variant Testing',
   },
   {
@@ -30,7 +27,6 @@ const RESULTS_DATA = [
     label: 'Physical studio cost',
     desc: 'Indie creators & educators produce broadcast-ready video with custom background music and sound effects — no filming crew or stock fees.',
     image: Images.resultsFilmStudio,
-    videoUrl: Videos.finishLine,
     tag: 'Virtual Studio Set',
   },
 ];
@@ -59,30 +55,7 @@ export default function RealResults() {
             >
               {/* Visual Thumbnail Frame */}
               <div className="result-thumb-wrapper">
-                {typeof item.videoUrl === 'string' && (item.videoUrl.endsWith('.mp4') || item.videoUrl.endsWith('.webm')) ? (
-                  <video
-                    ref={(el) => {
-                      if (el) {
-                        el.muted = true;
-                        el.defaultMuted = true;
-                        el.play().catch(() => {});
-                      }
-                    }}
-                    src={item.videoUrl}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className="result-thumb-img"
-                    onLoadedMetadata={(e) => {
-                      e.target.muted = true;
-                      e.target.play().catch(() => {});
-                    }}
-                  />
-                ) : (
-                  <img src={item.videoUrl || item.image} alt={item.label} className="result-thumb-img" loading="lazy" />
-                )}
+                <img src={item.image} alt={item.label} className="result-thumb-img" loading="lazy" />
                 <div className="result-thumb-overlay" />
                 <span className="result-thumb-tag">
                   <Film size={11} /> {item.tag}

@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import './StyleShowcase.css';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { Images } from '../assets/images';
 import { Videos } from '../assets/videos';
 
 const SHOWCASE_ITEMS = [
@@ -8,121 +9,92 @@ const SHOWCASE_ITEMS = [
     id: 1,
     title: 'Blockbuster Cinematic Action',
     desc: 'Dynamic tracking shots, volumetric smoke explosions, and Hollywood filmic color grading.',
-    videoUrl: Videos.finishLine,
+    gif: Videos.gifFinishLine,
+    image: Images.styleCinemaAction,
   },
   {
     id: 2,
     title: 'Commercial Product Reveals',
     desc: 'Luxury product macro shots with slow-motion fluid physics, studio rim lights, and soft speculars.',
-    videoUrl: Videos.flowerTimelapse,
+    gif: Videos.gifFlower,
+    image: Images.styleProductCommercial,
   },
   {
     id: 3,
     title: 'Kinetic Typography & Motion Ads',
     desc: 'Dynamic graphic rhythms, bold 3D typographic animation, and beat-synced cuts for social ads.',
-    videoUrl: Videos.cldMotion,
+    gif: Videos.gifCldMotion,
+    image: Images.styleTypographyMotion,
   },
   {
     id: 4,
-    title: '3D CGI & Urban Cinema',
-    desc: 'Vibrant character animation with natural physics, lifelike motion rigs, and cinematic audio.',
-    videoUrl: Videos.pedestrians,
+    title: '3D CGI Character Animation',
+    desc: 'Vibrant 3D character animation with natural physics, lifelike motion rigs, and synced audio.',
+    gif: Videos.gifPedestrians,
+    image: Images.style3DCharacter,
   },
   {
     id: 5,
     title: 'Coastal FPV Drone Sweep',
     desc: 'Golden hour cinematic FPV drone flight sweeping over coastal ocean surf with lens flare.',
-    videoUrl: Videos.coastalDrone,
+    gif: Videos.gifCoastal,
+    image: Images.heroDroneWaterfall,
   },
   {
     id: 6,
     title: 'Food & Beverage High-Speed Macro',
     desc: 'Ultra-slow-motion liquid pours, golden crema swirls, and appetizing lifestyle commercials.',
-    videoUrl: Videos.flowerTimelapse,
+    gif: Videos.gifFlower,
+    image: Images.styleFoodSlowmo,
   },
   {
     id: 7,
     title: '8K Documentary Wildlife Slow-Mo',
     desc: 'BBC Earth-style high-speed wildlife tracking, snowy mountain landscapes, and natural depth.',
-    videoUrl: Videos.snowHorses,
+    gif: Videos.gifSnowHorses,
+    image: Images.styleNatureWildlife,
   },
   {
     id: 8,
     title: 'Bioluminescent Deep Reef',
     desc: 'Majestic sea turtle gliding through crystalline turquoise waters and sunlit coral reef caustics.',
-    videoUrl: Videos.seaTurtle,
+    gif: Videos.gifSeaTurtle,
+    image: Images.styleNatureWildlife,
   },
   {
     id: 9,
     title: 'Anime & Stylized Action Motion',
     desc: 'High-octane anime combat sequences with speed lines, dynamic sakuga energy, and neon slashes.',
-    videoUrl: Videos.sceneQuantum,
+    gif: Videos.gifQuantum,
+    image: Images.styleAnimeAction,
   },
   {
     id: 10,
     title: 'Retro 80s Synthwave & VHS',
     desc: 'Nostalgic synthwave aesthetics, glowing wireframe digital horizons, and analog tape scanlines.',
-    videoUrl: Videos.sceneCyber,
+    gif: Videos.gifCyber,
+    image: Images.styleVHSSynthwave,
   },
   {
     id: 11,
     title: 'Supercar Velocity Pursuit',
     desc: 'High-octane urban night pursuit with dynamic anamorphic lens flare and realistic motion blur.',
-    videoUrl: Videos.supercar,
+    gif: Videos.gifSupercar,
+    image: Images.bannerSupercarDrift,
   },
 ];
 
 function ShowcaseVideoCard({ item }) {
-  const isVideo = typeof item.videoUrl === 'string' && (item.videoUrl.endsWith('.mp4') || item.videoUrl.endsWith('.webm'));
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    if (!isVideo) return;
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    video.defaultMuted = true;
-    
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        video.muted = true;
-        video.play().catch(() => {});
-      });
-    }
-  }, [item.videoUrl, isVideo]);
-
   return (
     <div className="showcase-card">
       <div className="showcase-image-wrapper">
-        {isVideo ? (
-          <video
-            ref={videoRef}
-            src={item.videoUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="showcase-img"
-            onLoadedMetadata={(e) => {
-              e.target.muted = true;
-              e.target.play().catch(() => {});
-            }}
-            onCanPlay={(e) => {
-              e.target.muted = true;
-              e.target.play().catch(() => {});
-            }}
-          />
-        ) : (
-          <img
-            src={item.videoUrl || item.image}
-            alt={item.title}
-            className="showcase-img"
-            loading="lazy"
-          />
-        )}
+        <img
+          src={item.gif || item.image}
+          alt={item.title}
+          className="showcase-img"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
 
       <div className="showcase-card-body">
@@ -144,7 +116,7 @@ export default function StyleShowcase() {
 
   // Smooth physics-based horizontal translation on page scroll
   const rawX = useTransform(scrollYProgress, [0, 1], ['0px', '-1400px']);
-  const x = useSpring(rawX, { stiffness: 90, damping: 25, restDelta: 0.001 });
+  const x = useSpring(rawX, { stiffness: 120, damping: 30, restDelta: 0.01 });
 
   return (
     <section className="style-showcase-section" id="product" ref={sectionRef}>
