@@ -1,0 +1,123 @@
+/* Tech Benchmarks Styles */
+.tech-benchmarks-section {
+  position: relative;
+  padding: 90px 24px 100px;
+  background: #06070d;
+}
+
+.tech-benchmarks-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.benchmarks-header {
+  text-align: center;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.benchmarks-badge {
+  display: inline-flex;
+  padding: 4px 14px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(192, 132, 252, 0.3);
+  border-radius: 9999px;
+  margin-bottom: 14px;
+}
+
+.benchmarks-badge .badge-text {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #c084fc;
+}
+
+.benchmarks-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.benchmarks-subtitle {
+  font-size: 0.95rem;
+  color: #9499ab;
+}
+
+.benchmarks-table-wrapper {
+  background: #0d0f19;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow-x: auto;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+.benchmarks-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 700px;
+}
+
+.benchmarks-table th {
+  padding: 16px 20px;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #788299;
+  background: #080a13;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.th-cognexa {
+  color: #c084fc !important;
+}
+
+.benchmarks-table td {
+  padding: 18px 20px;
+  font-size: 0.86rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.benchmarks-table tr:last-child td {
+  border-bottom: none;
+}
+
+.td-metric {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.val-cognexa-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(168, 115, 255, 0.4);
+  border-radius: 9999px;
+  color: #e9d5ff;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.val-icon {
+  color: #38bdf8;
+}
+
+.td-val {
+  color: #8b92a5;
+}
+
+.gain-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-family: monospace;
+}

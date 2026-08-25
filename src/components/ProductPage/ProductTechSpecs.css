@@ -1,0 +1,126 @@
+/* ==========================================================================
+   TECHNICAL ARCHITECTURE & SPECIFICATIONS
+   ========================================================================== */
+
+.tech-specs-section {
+  position: relative;
+  padding: 5rem 1.5rem 6.5rem;
+  background-color: #090a0f;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tech-specs-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.specs-header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 3.5rem;
+}
+
+.specs-pill-tag {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 1rem;
+}
+
+.specs-title {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1.1rem;
+}
+
+.specs-subtitle {
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.spec-card {
+  background: rgba(18, 20, 29, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.spec-card:hover {
+  background: rgba(26, 30, 44, 0.85);
+  border-color: rgba(6, 182, 212, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
+}
+
+.spec-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spec-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+
+.spec-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.spec-desc {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #94a3b8;
+}
+
+@media (max-width: 1024px) {
+  .specs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .specs-grid {
+    grid-template-columns: 1fr;
+  }
+}

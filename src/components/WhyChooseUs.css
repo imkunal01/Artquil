@@ -1,0 +1,114 @@
+.why-choose-section {
+  position: relative;
+  background-color: #07080c;
+  padding: 100px 24px 120px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.why-choose-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 60px;
+}
+
+.why-choose-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 720px;
+}
+
+.why-choose-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a855f7;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.why-choose-headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.why-choose-subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.why-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.why-feat-card {
+  background: #0d0f18;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
+.why-feat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.15);
+}
+
+.feat-icon-bubble {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  color: #c084fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.feat-card-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.feat-card-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+@media (max-width: 960px) {
+  .why-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .why-features-grid {
+    grid-template-columns: 1fr;
+  }
+}

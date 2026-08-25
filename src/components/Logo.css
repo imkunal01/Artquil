@@ -1,0 +1,65 @@
+.artquil-logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.artquil-logo-wrapper:hover .artquil-icon-container {
+  transform: scale(1.08) rotate(3deg);
+  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.7));
+}
+
+.artquil-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.45));
+}
+
+/* Sizing Tokens */
+.size-sm .artquil-svg-icon {
+  width: 26px;
+  height: 26px;
+}
+.size-sm .artquil-brand-name {
+  font-size: 15px;
+}
+
+.size-md .artquil-svg-icon {
+  width: 32px;
+  height: 32px;
+}
+.size-md .artquil-brand-name {
+  font-size: 18px;
+}
+
+.size-lg .artquil-svg-icon {
+  width: 42px;
+  height: 42px;
+}
+.size-lg .artquil-brand-name {
+  font-size: 22px;
+}
+
+.artquil-svg-icon {
+  display: block;
+}
+
+.artquil-brand-name {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+  line-height: 1;
+}
+
+.artquil-dot-ai {
+  background: linear-gradient(135deg, #c084fc 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}

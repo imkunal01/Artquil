@@ -1,0 +1,141 @@
+.faq-section {
+  position: relative;
+  background-color: #07080c;
+  padding: 100px 24px 130px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.faq-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 70px;
+  align-items: flex-start;
+}
+
+.faq-header-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  position: sticky;
+  top: 100px;
+}
+
+.faq-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a855f7;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.faq-headline {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.2px;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.faq-subtitle {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: #94a3b8;
+  max-width: 360px;
+}
+
+.faq-accordion-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: #0d0f18;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px 22px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.faq-item:hover {
+  border-color: rgba(168, 85, 247, 0.35);
+  background: #111420;
+}
+
+.faq-item.open {
+  border-color: rgba(168, 85, 247, 0.5);
+  background: #121422;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 16px rgba(139, 92, 246, 0.1);
+}
+
+.faq-question-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.faq-icon-box {
+  color: #8b5cf6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.faq-question-text {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+  flex: 1;
+  text-align: left;
+}
+
+.faq-chevron {
+  color: #64748b;
+  transition: transform 0.3s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.faq-chevron.rotate {
+  transform: rotate(180deg);
+  color: #a855f7;
+}
+
+.faq-answer-box {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+}
+
+.faq-answer-text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .faq-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .faq-header-col {
+    position: static;
+    align-items: center;
+    text-align: center;
+  }
+  .faq-subtitle {
+    max-width: 100%;
+  }
+}

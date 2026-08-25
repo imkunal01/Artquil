@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #090a0f;
+  --bg-secondary: #0f111a;
+  --bg-card: rgba(22, 25, 37, 0.7);
+  --bg-card-hover: rgba(30, 35, 52, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent-purple: #8b5cf6;
+  --accent-indigo: #6366f1;
+  --accent-cyan: #06b6d4;
+  --accent-pink: #ec4899;
+  --accent-gradient: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #06b6d4 100%);
+  --accent-gradient-warm: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+  --font-serif: 'Instrument Serif', 'Playfair Display', Georgia, serif;
+}
+
+.font-serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.text-gradient-purple-cyan {
+  background: linear-gradient(135deg, #c084fc 0%, #818cf8 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-lavender {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c4b5fd 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #090a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ==========================================================================
+   Scroll Reveal Animations
+   ========================================================================== */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(35px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-init.reveal-left {
+  transform: translateX(-40px);
+}
+
+.reveal-init.reveal-right {
+  transform: translateX(40px);
+}
+
+.reveal-init.reveal-scale {
+  transform: scale(0.92) translateY(20px);
+}
+
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translate(0, 0) scale(1) !important;
+}
+
+/* Stagger Delays */
+.delay-100 { transition-delay: 100ms !important; }
+.delay-200 { transition-delay: 200ms !important; }
+.delay-300 { transition-delay: 300ms !important; }
+.delay-400 { transition-delay: 400ms !important; }
+.delay-500 { transition-delay: 500ms !important; }
+.delay-600 { transition-delay: 600ms !important; }
+.delay-700 { transition-delay: 700ms !important; }
+.delay-800 { transition-delay: 800ms !important; }
+
+/* Subtle Button Shimmer Effect */
+.btn-start,
+.btn-generate,
+.btn-explore-product,
+.btn-plan-primary,
+.btn-cta-white {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-start::after,
+.btn-generate::after,
+.btn-explore-product::after,
+.btn-plan-primary::after,
+.btn-cta-white::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: rotate(25deg);
+  transition: none;
+  pointer-events: none;
+}
+
+.btn-start:hover::after,
+.btn-generate:hover::after,
+.btn-explore-product:hover::after,
+.btn-plan-primary:hover::after,
+.btn-cta-white:hover::after {
+  left: 200%;
+  transition: all 0.75s ease-in-out;
+}
+
+

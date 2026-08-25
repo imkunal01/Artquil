@@ -1,0 +1,226 @@
+.pricing-section {
+  position: relative;
+  background-color: #07080c;
+  padding: 100px 24px 130px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pricing-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 60px;
+}
+
+.pricing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pricing-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a855f7;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pricing-headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 54px);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+  margin-bottom: 24px;
+}
+
+/* Billing Toggle Switcher */
+.billing-toggle-wrapper {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(18, 20, 31, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  padding: 4px;
+  gap: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.billing-toggle-btn {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.billing-toggle-btn.active {
+  background: #222638;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.save-badge {
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+}
+
+.plan-savings-tag {
+  font-size: 12px;
+  color: #a78bfa;
+  font-weight: 600;
+  margin-top: -18px;
+  margin-bottom: 22px;
+}
+
+.pricing-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  width: 100%;
+  align-items: stretch;
+}
+
+.pricing-card {
+  position: relative;
+  background: #0d0f18;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 42px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.pricing-card.card-highlighted {
+  border-color: rgba(168, 85, 247, 0.6);
+  background: linear-gradient(180deg, rgba(26, 22, 45, 0.6) 0%, rgba(13, 15, 24, 0.95) 100%);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(168, 85, 247, 0.2);
+}
+
+.plan-popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.5);
+  text-transform: uppercase;
+}
+
+.plan-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.plan-period {
+  font-size: 15px;
+  color: #94a3b8;
+}
+
+.plan-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 36px;
+  flex: 1;
+}
+
+.plan-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #cbd5e1;
+}
+
+.feature-bullet {
+  color: #8b5cf6;
+  font-weight: bold;
+}
+
+.btn-plan {
+  width: 100%;
+  padding: 12px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.btn-plan-outline {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.btn-plan-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-plan-primary {
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.45);
+}
+
+.btn-plan-primary:hover {
+  background: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+  box-shadow: 0 6px 22px rgba(124, 58, 237, 0.65);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .pricing-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

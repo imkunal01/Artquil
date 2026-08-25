@@ -1,0 +1,383 @@
+/* Multi-Model Pipeline & Rendering Section Styles */
+.pipeline-section {
+  position: relative;
+  padding: 100px 24px;
+  background: #06070d;
+  overflow: hidden;
+}
+
+.pipeline-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+/* Row 1 & Row 2 Grids */
+.pipeline-row {
+  display: grid;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.pipeline-row-2 {
+  grid-template-columns: 1.08fr 1fr;
+}
+
+/* Left & Right Text Columns */
+.pipeline-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pipeline-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  background: rgba(138, 75, 255, 0.1);
+  border: 1px solid rgba(168, 115, 255, 0.25);
+  border-radius: 9999px;
+  margin-bottom: 20px;
+}
+
+.pipeline-badge.rendering {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(129, 140, 248, 0.3);
+}
+
+.pipeline-badge-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c49aff;
+}
+
+.pipeline-badge.rendering .pipeline-badge-text {
+  color: #818cf8;
+}
+
+.pipeline-title {
+  font-size: clamp(2rem, 3.4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.pipeline-desc {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #9499ab;
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+
+/* Metric Pills (Matching Screenshot 2) */
+.pipeline-metrics-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.pipeline-metric-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  background: #0f121d;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 9999px;
+  cursor: default;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pipeline-metric-chip:hover,
+.pipeline-metric-chip.hovered {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: rgba(168, 115, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.2);
+}
+
+.metric-chip-value {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: -0.01em;
+}
+
+.pipeline-metric-chip:hover .metric-chip-value {
+  color: #ffffff;
+}
+
+/* Subfeatures List */
+.pipeline-subfeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.pipeline-subfeature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+.pipeline-subfeature-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+}
+
+.subfeature-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(124, 58, 237, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(168, 115, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.subfeature-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.subfeature-text {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #838a9d;
+  margin: 0;
+}
+
+/* Visual Cards */
+.pipeline-visual-col {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.pipeline-visual-card {
+  position: relative;
+  width: 100%;
+  border-radius: 24px;
+  background: #0b0d18;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pipeline-visual-card:hover {
+  border-color: rgba(168, 115, 255, 0.35);
+  transform: translateY(-3px);
+}
+
+.pipeline-card-glow-bg {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.pipeline-card-glow-bg.purple {
+  left: 10%;
+  right: auto;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.pipeline-img-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #080911;
+}
+
+.pipeline-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.pipeline-visual-card:hover .pipeline-main-img {
+  transform: scale(1.025);
+}
+
+/* Floating HUD Tags */
+.pipeline-hud-tag {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(10, 12, 22, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.hud-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+  animation: pulseDot 1.5s infinite;
+}
+
+.hud-pulse-dot.purple {
+  background: #a855f7;
+  box-shadow: 0 0 8px #a855f7;
+}
+
+.hud-pulse-dot.cyan {
+  background: #06b6d4;
+  box-shadow: 0 0 8px #06b6d4;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+.tag-input {
+  top: 14px;
+  left: 14px;
+}
+
+.tag-models {
+  top: 14px;
+  right: 14px;
+}
+
+.tag-output {
+  bottom: 14px;
+  right: 14px;
+}
+
+/* Telemetry stats for GPU card */
+.gpu-telemetry-overlay {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: rgba(8, 10, 18, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.telemetry-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.telemetry-label {
+  font-size: 0.65rem;
+  color: #8b92a5;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.telemetry-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #c084fc;
+  font-family: monospace;
+}
+
+/* Card Footer Bar */
+.pipeline-card-footer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: #080a13;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.pipeline-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.indicator-live-icon {
+  color: #10b981;
+}
+
+.pipeline-card-footer-bar strong {
+  color: #f1f5f9;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .pipeline-row,
+  .pipeline-row-2 {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .pipeline-row-2 .pipeline-visual-col {
+    order: 2;
+  }
+
+  .pipeline-row-2 .pipeline-text-col {
+    order: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .pipeline-section {
+    padding: 70px 16px;
+  }
+
+  .pipeline-container {
+    gap: 80px;
+  }
+
+  .pipeline-title {
+    font-size: 1.85rem;
+  }
+
+  .gpu-telemetry-overlay {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

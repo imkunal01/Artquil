@@ -1,0 +1,122 @@
+.testimonials-section {
+  position: relative;
+  background-color: #07080c;
+  padding: 100px 24px 120px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.testimonials-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 50px;
+}
+
+.testimonials-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonials-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #a855f7;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.testimonials-headline {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: #ffffff;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  width: 100%;
+}
+
+.testimonial-card {
+  background: #0d0f18;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(139, 92, 246, 0.15);
+}
+
+.stars-row {
+  display: flex;
+  gap: 4px;
+}
+
+.testimonial-quote {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #e2e8f0;
+  font-style: normal;
+  flex: 1;
+}
+
+.author-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.author-avatar,
+.author-avatar-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+  flex-shrink: 0;
+}
+
+.author-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.author-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.author-role {
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+}

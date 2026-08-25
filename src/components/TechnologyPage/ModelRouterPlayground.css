@@ -1,0 +1,353 @@
+/* Model Router Simulator Styles */
+.router-playground-section {
+  position: relative;
+  padding: 90px 24px;
+  background: #080912;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.router-playground-container {
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.router-header {
+  text-align: center;
+  margin-bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.router-badge {
+  display: inline-flex;
+  padding: 4px 14px;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 9999px;
+  margin-bottom: 14px;
+}
+
+.router-badge .badge-text {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #818cf8;
+}
+
+.router-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.router-subtitle {
+  font-size: 0.95rem;
+  color: #9499ab;
+  max-width: 580px;
+}
+
+/* Presets Bar */
+.router-presets-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.router-preset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  background: #0f121e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.router-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.router-preset-btn.active {
+  background: rgba(124, 58, 237, 0.22);
+  border-color: rgba(168, 115, 255, 0.5);
+  color: #c49aff;
+}
+
+.preset-icon {
+  color: #a855f7;
+}
+
+/* Grid Layout */
+.router-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Left Column */
+.router-control-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.router-input-box {
+  background: #0c0e18;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  padding: 16px 18px;
+}
+
+.router-input-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #818cf8;
+  margin-bottom: 8px;
+}
+
+.router-textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+  color: #f1f5f9;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+  line-height: 1.5;
+}
+
+.router-textarea:focus {
+  border-color: rgba(168, 115, 255, 0.4);
+}
+
+.router-input-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.token-count {
+  font-size: 0.74rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.btn-route-exec {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-route-exec:hover:not(:disabled) {
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-route-exec:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Telemetry Cards */
+.router-telemetry-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.telemetry-box {
+  background: #0b0d17;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.telemetry-dim {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: #717d96;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.telemetry-bold {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.text-green { color: #34d399 !important; }
+.text-purple { color: #c084fc !important; }
+.text-cyan { color: #38bdf8 !important; }
+
+/* Terminal */
+.router-terminal {
+  background: #07080f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.terminal-top {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  background: #0b0d18;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 12px;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #f59e0b; }
+.dot.green { background: #10b981; }
+
+.terminal-title {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.terminal-body {
+  padding: 12px 14px;
+  min-height: 100px;
+  font-family: monospace;
+  font-size: 0.74rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.terminal-line {
+  color: #a5f3fc;
+}
+
+.terminal-line.placeholder {
+  color: #475569;
+}
+
+/* Right Column: Preview */
+.router-output-col {
+  width: 100%;
+}
+
+.router-preview-card {
+  background: #0d0f19;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+.preview-media-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #06070d;
+}
+
+.router-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.router-preview-img.blur-pulse {
+  filter: blur(8px) brightness(1.3);
+  animation: pulseBlur 0.4s infinite alternate;
+}
+
+@keyframes pulseBlur {
+  0% { filter: blur(5px) brightness(1.1); }
+  100% { filter: blur(9px) brightness(1.4); }
+}
+
+.preview-top-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(10, 12, 22, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.check-icon {
+  color: #34d399;
+}
+
+.preview-bottom-stats {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(8, 10, 18, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 0.72rem;
+  color: #cbd5e1;
+  font-family: monospace;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .router-grid {
+    grid-template-columns: 1fr;
+  }
+}
