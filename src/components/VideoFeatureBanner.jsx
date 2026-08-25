@@ -10,7 +10,7 @@ const SCENES = [
     id: 'neural-flow',
     name: 'Neural Quantum Simulation',
     prompt: 'Hyper-detailed quantum particle simulation with volumetric lighting and radiant energy pulses in 4K 60fps',
-    src: Videos.sceneVideo1,
+    src: Videos.sceneQuantum,
     tint: '#06b6d4',
     swirl: 1.3,
   },
@@ -18,8 +18,40 @@ const SCENES = [
     id: 'cyber-motion',
     name: 'Cyber Kinetic Dimension',
     prompt: 'Futuristic cinematic journey through rainy neon metropolitan highway with optical refractions and ambient synth soundtrack',
-    src: Videos.sceneVideo2,
+    src: Videos.sceneCyber,
     tint: '#a855f7',
+    swirl: 1.4,
+  },
+  {
+    id: 'coastal-drone',
+    name: 'Coastal FPV Drone Flight',
+    prompt: 'Cinematic 4K FPV drone soaring over golden hour coastal breakers with dynamic lens flares and atmospheric ocean mist',
+    src: Videos.sceneCoastal,
+    tint: '#38bdf8',
+    swirl: 1.25,
+  },
+  {
+    id: 'snow-horses',
+    name: 'Alpine Snow Tracking Shot',
+    prompt: 'Ultra slow-motion cinematic tracking shot of majestic wild horses galloping across snowy alpine valley in 8K resolution',
+    src: Videos.sceneSnowHorses,
+    tint: '#818cf8',
+    swirl: 1.35,
+  },
+  {
+    id: 'sea-turtle',
+    name: 'Bioluminescent Reef Sanctuary',
+    prompt: 'Majestic sea turtle gliding through crystalline turquoise waters and sunlit coral reefs with synchronized ambient audio',
+    src: Videos.sceneSeaTurtle,
+    tint: '#10b981',
+    swirl: 1.45,
+  },
+  {
+    id: 'supercar-drift',
+    name: 'Supercar Velocity Pursuit',
+    prompt: 'High-octane urban pursuit tracking shot with dynamic anamorphic lens flare, motion blur, and spatial engine roar',
+    src: Videos.sceneSupercar,
+    tint: '#f43f5e',
     swirl: 1.4,
   },
 ];
@@ -29,12 +61,12 @@ export default function VideoFeatureBanner() {
   const [isPaused, setIsPaused] = useState(false);
   const [sectionRef, isVisible] = useScrollReveal({ threshold: 0.15 });
 
-  // Auto change image every 6.5s (pauses on hover so user can play with ripple freely)
+  // Auto change video scene every 7s (pauses on hover so user can play with ripple freely)
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setActiveSceneIndex((prev) => (prev + 1) % SCENES.length);
-    }, 6500);
+    }, 7000);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -56,7 +88,7 @@ export default function VideoFeatureBanner() {
           </h2>
 
           <p className="banner-subtitle">
-            Move your cursor across the canvas below to interact with the neural latent space. Fluid light refractions and caustics simulate AI frame generation physics in real-time.
+            Move your cursor across the canvas below to interact with the neural latent space. Fluid light refractions and caustics simulate AI frame generation physics in real-time across multiple video models.
           </p>
 
           {/* Clean Glass Scene Selector Pills */}
@@ -66,6 +98,10 @@ export default function VideoFeatureBanner() {
                 key={scene.id}
                 className={`scene-pill-btn ${activeSceneIndex === idx ? 'active' : ''}`}
                 onClick={() => setActiveSceneIndex(idx)}
+                style={{
+                  borderColor: activeSceneIndex === idx ? scene.tint : undefined,
+                  boxShadow: activeSceneIndex === idx ? `0 0 16px ${scene.tint}55` : undefined,
+                }}
               >
                 <span>{scene.name}</span>
               </button>
@@ -73,7 +109,7 @@ export default function VideoFeatureBanner() {
           </div>
         </div>
 
-        {/* Grand Big Glass Canvas Stage (Clean with No HUD clutter) */}
+        {/* Grand Big Glass Canvas Stage */}
         <div 
           className={`banner-canvas-stage reveal-init delay-200 ${isVisible ? 'reveal-visible' : ''}`}
           onMouseEnter={() => setIsPaused(true)}
@@ -90,7 +126,7 @@ export default function VideoFeatureBanner() {
             <div className="ripple-canvas-wrapper">
               <RippleDistortion
                 key={currentScene.id}
-                src={currentScene.src || currentScene.image}
+                src={currentScene.src}
                 brushSize={190}
                 strength={0.24}
                 swirl={currentScene.swirl}
@@ -113,7 +149,7 @@ export default function VideoFeatureBanner() {
 
           {/* Subtle Clean Prompt Caption Below Frame */}
           <div className="canvas-bottom-caption">
-            <Sparkles size={15} className="caption-sparkle" />
+            <Sparkles size={15} className="caption-sparkle" style={{ color: currentScene.tint }} />
             <span className="caption-prompt">"{currentScene.prompt}"</span>
           </div>
 

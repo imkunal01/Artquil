@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import CTABanner from '../CTABanner';
 import Images from '../../assets/images';
+import { Videos } from '../../assets/videos';
 
 const PAPERS = [
   {
@@ -146,14 +147,37 @@ export default function ResearchPage() {
             {/* Interpolated Visual Frame */}
             <div className="latent-images-comparison">
               <div className="latent-frame-box">
-                <img 
-                  src={latentAlpha < 50 ? Images.techFujiArtwork : Images.bannerScifiSingularity} 
-                  alt="Latent Vector A / B" 
-                  className="latent-visual-img"
-                  style={{
-                    filter: `hue-rotate(${latentAlpha * 1.8}deg) saturate(${1 + latentAlpha / 100})`
-                  }}
-                />
+                {(() => {
+                  const mediaSrc = latentAlpha < 50 ? Videos.coastalDrone : Videos.sceneCyber;
+                  const posterImg = latentAlpha < 50 ? Images.techFujiArtwork : Images.bannerScifiSingularity;
+                  const isVid = typeof mediaSrc === 'string' && (mediaSrc.endsWith('.mp4') || mediaSrc.endsWith('.webm'));
+
+                  return isVid ? (
+                    <video 
+                      key={latentAlpha < 50 ? 'nature' : 'cyber'}
+                      src={mediaSrc} 
+                      poster={posterImg}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="latent-visual-img"
+                      style={{
+                        filter: `hue-rotate(${latentAlpha * 1.8}deg) saturate(${1 + latentAlpha / 100})`
+                      }}
+                    />
+                  ) : (
+                    <img 
+                      key={latentAlpha < 50 ? 'nature' : 'cyber'}
+                      src={mediaSrc || posterImg} 
+                      alt="Latent space interpolation frame"
+                      className="latent-visual-img"
+                      style={{
+                        filter: `hue-rotate(${latentAlpha * 1.8}deg) saturate(${1 + latentAlpha / 100})`
+                      }}
+                    />
+                  );
+                })()}
                 
                 <div className="latent-hud-badge top-left">
                   <span>Vector A: <strong>Oriental Landscape (α = {100 - latentAlpha}%)</strong></span>

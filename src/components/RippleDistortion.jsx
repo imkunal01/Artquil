@@ -204,6 +204,9 @@ const RippleDistortion = ({
 
     let disposed = false;
     let videoEl = null;
+    let gifFrames = [];
+    let currentGifIndex = 0;
+    let lastGifFrameTime = performance.now();
 
     const isVideoSrc = typeof src === 'string' && (
       src.endsWith('.mp4') ||
@@ -211,8 +214,13 @@ const RippleDistortion = ({
       src.endsWith('.ogg') ||
       src.includes('.mp4?') ||
       src.includes('blob:') ||
-      src.includes('/video/') ||
+      (src.includes('/video/') && !src.endsWith('.gif')) ||
       src.startsWith('data:video')
+    );
+
+    const isGifSrc = typeof src === 'string' && (
+      src.endsWith('.gif') ||
+      src.includes('.gif?')
     );
 
     if (isVideoSrc) {
@@ -244,6 +252,51 @@ const RippleDistortion = ({
       });
 
       videoEl.play().catch(() => {});
+    } else if (isGifSrc && typeof window.ImageDecoder !== 'undefined') {
+      (async () => {
+        try {
+          const response = await fetch(src);
+          if (!response.ok) throw new Error('Failed to fetch GIF');
+          const buffer = await response.arrayBuffer();
+          if (disposed) return;
+
+          const decoder = new ImageDecoder({ data: buffer, type: 'image/gif' });
+          await decoder.tracks.ready;
+          const track = decoder.tracks.selectedTrack;
+          const count = track ? track.frameCount : 1;
+
+          for (let i = 0; i < count; i++) {
+            if (disposed) break;
+            const { image: frame } = await decoder.decode({ frameIndex: i });
+            const duration = (frame.duration || 100000) / 1000;
+            const bitmap = await createImageBitmap(frame, { imageOrientation: 'flipY' });
+            frame.close();
+            if (disposed) {
+              bitmap.close();
+              break;
+            }
+            gifFrames.push({ bitmap, duration: Math.max(25, duration) });
+            if (i === 0) {
+              imageTexture.image = bitmap;
+              imageTexture.needsUpdate = true;
+              compositeUniforms.uTextureSize.value = [bitmap.width, bitmap.height];
+            }
+          }
+        } catch (err) {
+          if (!disposed) {
+            const image = new window.Image();
+            image.crossOrigin = 'anonymous';
+            image.decoding = 'async';
+            image.onload = () => {
+              if (disposed) return;
+              imageTexture.image = image;
+              imageTexture.needsUpdate = true;
+              compositeUniforms.uTextureSize.value = [image.naturalWidth || 1, image.naturalHeight || 1];
+            };
+            image.src = src;
+          }
+        }
+      })();
     } else {
       const image = new window.Image();
       image.crossOrigin = 'anonymous';
@@ -251,6 +304,7 @@ const RippleDistortion = ({
       image.onload = () => {
         if (disposed) return;
         imageTexture.image = image;
+        imageTexture.needsUpdate = true;
         compositeUniforms.uTextureSize.value = [image.naturalWidth || 1, image.naturalHeight || 1];
       };
       image.src = src;
@@ -446,6 +500,17 @@ const RippleDistortion = ({
         if (compositeUniforms.uTextureSize.value[0] <= 1 && videoEl.videoWidth) {
           compositeUniforms.uTextureSize.value = [videoEl.videoWidth, videoEl.videoHeight];
         }
+      } else if (gifFrames.length > 1) {
+        const activeFrame = gifFrames[currentGifIndex];
+        if (activeFrame && now - lastGifFrameTime >= activeFrame.duration) {
+          currentGifIndex = (currentGifIndex + 1) % gifFrames.length;
+          lastGifFrameTime = now;
+          const nextFrame = gifFrames[currentGifIndex];
+          if (nextFrame && nextFrame.bitmap) {
+            imageTexture.image = nextFrame.bitmap;
+            imageTexture.needsUpdate = true;
+          }
+        }
       }
 
       renderer.render({ scene: waveMesh, target: displacementTarget, clear: true });
@@ -466,6 +531,12 @@ const RippleDistortion = ({
         videoEl.load();
         videoEl = null;
       }
+      gifFrames.forEach(f => {
+        if (f.bitmap && f.bitmap.close) {
+          try { f.bitmap.close(); } catch (_) {}
+        }
+      });
+      gifFrames = [];
       if (canvas.parentNode === mount) mount.removeChild(canvas);
       const ext = gl.getExtension('WEBGL_lose_context');
       if (ext) ext.loseContext();

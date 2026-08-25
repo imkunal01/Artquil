@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ModelRouterPlayground.css';
 import { Cpu, Terminal, Play, CheckCircle2, Sliders, Zap, Sparkles, Layers } from 'lucide-react';
 import Images from '../../assets/images';
+import { Videos } from '../../assets/videos';
 
 const ROUTING_PRESETS = [
   {
@@ -15,6 +16,7 @@ const ROUTING_PRESETS = [
     steps: 28,
     guidance: 6.5,
     previewImg: Images.bannerSupercarDrift,
+    previewVideo: Videos.supercar,
     confidence: '99.4%'
   },
   {
@@ -28,6 +30,7 @@ const ROUTING_PRESETS = [
     steps: 32,
     guidance: 7.0,
     previewImg: Images.bannerCyberCyborg,
+    previewVideo: Videos.sceneCyber,
     confidence: '98.9%'
   },
   {
@@ -41,6 +44,7 @@ const ROUTING_PRESETS = [
     steps: 24,
     guidance: 5.5,
     previewImg: Images.bannerBioluminescentOcean,
+    previewVideo: Videos.seaTurtle,
     confidence: '99.7%'
   }
 ];
@@ -179,11 +183,25 @@ export default function ModelRouterPlayground() {
           <div className="router-output-col">
             <div className="router-preview-card">
               <div className="preview-media-wrapper">
-                <img 
-                  src={currentPreset.previewImg} 
-                  alt={currentPreset.title}
-                  className={`router-preview-img ${isSimulating ? 'blur-pulse' : ''}`}
-                />
+                {typeof currentPreset.previewVideo === 'string' && (currentPreset.previewVideo.endsWith('.mp4') || currentPreset.previewVideo.endsWith('.webm')) ? (
+                  <video
+                    key={currentPreset.id}
+                    src={currentPreset.previewVideo}
+                    poster={currentPreset.previewImg}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className={`router-preview-img ${isSimulating ? 'blur-pulse' : ''}`}
+                  />
+                ) : (
+                  <img 
+                    key={currentPreset.id}
+                    src={currentPreset.previewVideo || currentPreset.previewImg} 
+                    alt={currentPreset.title}
+                    className={`router-preview-img ${isSimulating ? 'blur-pulse' : ''}`}
+                  />
+                )}
                 <div className="preview-top-badge">
                   <CheckCircle2 size={13} className="check-icon" />
                   <span>4K Lossless Quantized Output</span>

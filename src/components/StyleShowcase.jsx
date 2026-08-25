@@ -1,62 +1,137 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import './StyleShowcase.css';
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
-import { Images } from '../assets/images';
+import { Videos } from '../assets/videos';
 
 const SHOWCASE_ITEMS = [
   {
     id: 1,
     title: 'Blockbuster Cinematic Action',
     desc: 'Dynamic tracking shots, volumetric smoke explosions, and Hollywood filmic color grading.',
-    image: Images.styleCinemaAction,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+    videoUrl: Videos.finishLine,
   },
   {
     id: 2,
     title: 'Commercial Product Reveals',
     desc: 'Luxury product macro shots with slow-motion fluid physics, studio rim lights, and soft speculars.',
-    image: Images.styleProductCommercial,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    videoUrl: Videos.flowerTimelapse,
   },
   {
     id: 3,
     title: 'Kinetic Typography & Motion Ads',
     desc: 'Dynamic graphic rhythms, bold 3D typographic animation, and beat-synced cuts for social ads.',
-    image: Images.styleTypographyMotion,
+    videoUrl: Videos.cldMotion,
   },
   {
     id: 4,
-    title: '3D CGI Character Animation',
-    desc: 'Vibrant 3D character animation with natural physics, lifelike facial rigs, and synced voice lines.',
-    image: Images.style3DCharacter,
+    title: '3D CGI & Urban Cinema',
+    desc: 'Vibrant character animation with natural physics, lifelike motion rigs, and cinematic audio.',
+    videoUrl: Videos.pedestrians,
   },
   {
     id: 5,
-    title: 'Food & Beverage High-Speed Macro',
-    desc: 'Ultra-slow-motion liquid pours, golden crema swirls, and appetizing lifestyle commercials.',
-    image: Images.styleFoodSlowmo,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
+    title: 'Coastal FPV Drone Sweep',
+    desc: 'Golden hour cinematic FPV drone flight sweeping over coastal ocean surf with lens flare.',
+    videoUrl: Videos.coastalDrone,
   },
   {
     id: 6,
-    title: '8K Documentary Wildlife Slow-Mo',
-    desc: 'BBC Earth-style high-speed wildlife tracking, snowy mountain landscapes, and natural depth.',
-    image: Images.styleNatureWildlife,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    title: 'Food & Beverage High-Speed Macro',
+    desc: 'Ultra-slow-motion liquid pours, golden crema swirls, and appetizing lifestyle commercials.',
+    videoUrl: Videos.flowerTimelapse,
   },
   {
     id: 7,
-    title: 'Anime & Stylized Action Motion',
-    desc: 'High-octane anime combat sequences with speed lines, dynamic sakuga energy, and neon slashes.',
-    image: Images.styleAnimeAction,
+    title: '8K Documentary Wildlife Slow-Mo',
+    desc: 'BBC Earth-style high-speed wildlife tracking, snowy mountain landscapes, and natural depth.',
+    videoUrl: Videos.snowHorses,
   },
   {
     id: 8,
+    title: 'Bioluminescent Deep Reef',
+    desc: 'Majestic sea turtle gliding through crystalline turquoise waters and sunlit coral reef caustics.',
+    videoUrl: Videos.seaTurtle,
+  },
+  {
+    id: 9,
+    title: 'Anime & Stylized Action Motion',
+    desc: 'High-octane anime combat sequences with speed lines, dynamic sakuga energy, and neon slashes.',
+    videoUrl: Videos.sceneQuantum,
+  },
+  {
+    id: 10,
     title: 'Retro 80s Synthwave & VHS',
     desc: 'Nostalgic synthwave aesthetics, glowing wireframe digital horizons, and analog tape scanlines.',
-    image: Images.styleVHSSynthwave,
+    videoUrl: Videos.sceneCyber,
+  },
+  {
+    id: 11,
+    title: 'Supercar Velocity Pursuit',
+    desc: 'High-octane urban night pursuit with dynamic anamorphic lens flare and realistic motion blur.',
+    videoUrl: Videos.supercar,
   },
 ];
+
+function ShowcaseVideoCard({ item }) {
+  const isVideo = typeof item.videoUrl === 'string' && (item.videoUrl.endsWith('.mp4') || item.videoUrl.endsWith('.webm'));
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!isVideo) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        video.muted = true;
+        video.play().catch(() => {});
+      });
+    }
+  }, [item.videoUrl, isVideo]);
+
+  return (
+    <div className="showcase-card">
+      <div className="showcase-image-wrapper">
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={item.videoUrl}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="showcase-img"
+            onLoadedMetadata={(e) => {
+              e.target.muted = true;
+              e.target.play().catch(() => {});
+            }}
+            onCanPlay={(e) => {
+              e.target.muted = true;
+              e.target.play().catch(() => {});
+            }}
+          />
+        ) : (
+          <img
+            src={item.videoUrl || item.image}
+            alt={item.title}
+            className="showcase-img"
+            loading="lazy"
+          />
+        )}
+      </div>
+
+      <div className="showcase-card-body">
+        <h4 className="showcase-card-title">{item.title}</h4>
+        <p className="showcase-card-desc">{item.desc}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function StyleShowcase() {
   const sectionRef = useRef(null);
@@ -67,8 +142,8 @@ export default function StyleShowcase() {
     offset: ['start end', 'end start'],
   });
 
-  // Smooth physics-based horizontal translation on page scroll with no extra vertical space
-  const rawX = useTransform(scrollYProgress, [0, 1], ['0px', '-900px']);
+  // Smooth physics-based horizontal translation on page scroll
+  const rawX = useTransform(scrollYProgress, [0, 1], ['0px', '-1400px']);
   const x = useSpring(rawX, { stiffness: 90, damping: 25, restDelta: 0.001 });
 
   return (
@@ -87,28 +162,7 @@ export default function StyleShowcase() {
         <div className="showcase-track-viewport">
           <motion.div style={{ x }} className="showcase-motion-track">
             {SHOWCASE_ITEMS.map((item) => (
-              <div key={item.id} className="showcase-card">
-                <div className="showcase-image-wrapper">
-                  {item.videoUrl ? (
-                    <video
-                      src={item.videoUrl}
-                      poster={item.image}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="showcase-img"
-                    />
-                  ) : (
-                    <img src={item.image} alt={item.title} className="showcase-img" />
-                  )}
-                </div>
-
-                <div className="showcase-card-body">
-                  <h4 className="showcase-card-title">{item.title}</h4>
-                  <p className="showcase-card-desc">{item.desc}</p>
-                </div>
-              </div>
+              <ShowcaseVideoCard key={item.id} item={item} />
             ))}
           </motion.div>
         </div>

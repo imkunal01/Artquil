@@ -25,6 +25,7 @@ import galleryWatch from '../../assets/images/gallery_watch_1787660744791.jpg';
 import heroCyberpunk from '../../assets/images/hero_cyberpunk_chase.jpg';
 import bannerSupercar from '../../assets/images/banner_supercar_drift.jpg';
 import videoPerfume from '../../assets/images/video_perfume_1787660953928.jpg';
+import { Videos } from '../../assets/videos';
 
 const SANDBOX_TOOLS = [
   {
@@ -41,6 +42,7 @@ const SANDBOX_TOOLS = [
       'Dynamic drone sweep across alpine mountain peaks with morning mist, golden hour volumetric rays, photorealistic 8k'
     ],
     sampleImage: heroCyberpunk,
+    sampleVideo: Videos.sceneCyber,
     controls: ['Motion Strength: 85%', 'Camera: Orbit Left 45°', 'Soundtrack: Electronic Synthwave', 'FPS: 60 UHD']
   },
   {
@@ -57,6 +59,7 @@ const SANDBOX_TOOLS = [
       'Corporate 3D product reveal video with official hex #8B5CF6 glow accents and laser etching'
     ],
     sampleImage: heroSneaker,
+    sampleVideo: Videos.supercar,
     controls: ['Brand Lock: 100% Strict', 'LoRA Weights: #09a1f-custom', 'Hex Compliance: #8B5CF6 / #06B6D4', 'Team Workspace: Marketing HQ']
   },
   {
@@ -73,6 +76,7 @@ const SANDBOX_TOOLS = [
       'Outpaint 16:9 vertical frame to 21:9 cinematic ultra-wide without loss of edge consistency'
     ],
     sampleImage: videoPerfume,
+    sampleVideo: Videos.flowerTimelapse,
     controls: ['Brush Mode: Smart Inpaint', 'Edge Blend: 99.4%', 'Lighting Match: Auto HDR', 'Aspect Extender: 21:9']
   },
   {
@@ -89,6 +93,7 @@ const SANDBOX_TOOLS = [
       'Dynamic Social Ads: 240 A/B split-tested hooks and background soundtracks for TikTok and Instagram'
     ],
     sampleImage: galleryWatch,
+    sampleVideo: Videos.cldMotion,
     controls: ['Batch Count: 500 Videos', 'Queue: AWS GPU Parallel', 'Export Format: MP4 + MOV + ProRes', 'Delivery: S3 Bucket Webhook']
   },
   {
@@ -105,6 +110,7 @@ const SANDBOX_TOOLS = [
       'POST /v1/voice/sync — Generate 100% lip-synced neural voiceover from plain text transcript'
     ],
     sampleImage: bannerSupercar,
+    sampleVideo: Videos.finishLine,
     controls: ['Latency: 180ms TTFB', 'Uptime: 99.99%', 'SDKs: Node.js, Python, Go, cURL', 'Webhooks: HMAC SHA-256']
   },
   {
@@ -118,10 +124,11 @@ const SANDBOX_TOOLS = [
     presetPrompts: [
       'Scene Breakdown: Detected 3 subjects in motion, 85% golden ratio composition, mood: cinematic inspirational',
       'Neural Voiceover: Synthesized friendly narrator audio in English, Spanish, and Hindi with custom pitch',
-      'Safety Guardrails: 100% compliant with copyright and brand safety filters for broadcast deployment'
+      'Safety Verification: 0 violations, safe for broad commercial distribution and paid advertising'
     ],
     sampleImage: heroMascot,
-    controls: ['Audio Voiceover: Natural Neural', 'Scene Detection: 99.2%', 'OCR Accuracy: 99.8%', 'Languages: 42+ Supported']
+    sampleVideo: Videos.sceneQuantum,
+    controls: ['Safety Score: 100% Pass', 'Multimodal OCR: Active', 'Synced Audio: True', 'Lip Sync: Ultra Precision']
   }
 ];
 
@@ -371,11 +378,25 @@ export default function ProductSandbox({ selectedToolId = 'studio' }) {
                 </div>
 
                 <div className="preview-image-container">
-                  <img 
-                    src={currentTool.sampleImage} 
-                    alt="Tool Output Preview" 
-                    className={`preview-img ${isGenerating ? 'is-rendering' : ''}`}
-                  />
+                  {typeof currentTool.sampleVideo === 'string' && (currentTool.sampleVideo.endsWith('.mp4') || currentTool.sampleVideo.endsWith('.webm')) ? (
+                    <video 
+                      key={currentTool.id}
+                      src={currentTool.sampleVideo} 
+                      poster={currentTool.sampleImage}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className={`preview-img ${isGenerating ? 'is-rendering' : ''}`}
+                    />
+                  ) : (
+                    <img 
+                      key={currentTool.id}
+                      src={currentTool.sampleVideo || currentTool.sampleImage} 
+                      alt="Tool Output Preview" 
+                      className={`preview-img ${isGenerating ? 'is-rendering' : ''}`}
+                    />
+                  )}
 
                   {/* Rendering Overlay */}
                   {isGenerating && (

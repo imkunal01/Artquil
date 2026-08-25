@@ -2,15 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import './HeroSection.css';
 import { Sparkles, ArrowRight } from 'lucide-react';
 import { Images } from '../assets/images';
+import { Videos } from '../assets/videos';
 import MoltenMetal from './MoltenMetal';
 
 const VIDEO_CARDS = [
   {
     id: 0,
-    title: "Cinematic drone flight over misty mountain waterfalls at sunset",
-    fullPrompt: "Cinematic drone flight sweeping over misty mountain waterfalls with synchronized orchestral score, 4K 60fps",
+    title: "Cinematic coastal drone flight over golden hour ocean surf",
+    fullPrompt: "Cinematic FPV drone flight sweeping over golden hour coastal breakers with synchronized orchestral score, 4K 60fps",
     image: Images.heroDroneWaterfall,
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    videoUrl: Videos.coastalDrone,
     duration: "00:08",
     tag: "Cinematic Film",
     presetName: "Drone Sweep",
@@ -18,12 +19,12 @@ const VIDEO_CARDS = [
   },
   {
     id: 1,
-    title: "Luxury perfume bottle with slow-motion violet water splash",
-    fullPrompt: "Commercial video of luxury perfume bottle with slow-motion violet water droplets and whisper voiceover, 4K HDR",
+    title: "Luxury botanic macro reveal with slow-motion fluid light",
+    fullPrompt: "Commercial video of luxury flower petals blooming with slow-motion water droplets and whisper voiceover, 4K HDR",
     image: Images.heroLuxuryCommercial,
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    videoUrl: Videos.flowerTimelapse,
     duration: "00:06",
-    tag: "Product Commercial",
+    tag: "Product Macro",
     presetName: "Product Macro",
     audioSynced: true,
   },
@@ -32,7 +33,7 @@ const VIDEO_CARDS = [
     title: "Cyberpunk warrior walking through rainy neon Tokyo at night",
     fullPrompt: "Cyberpunk warrior walking through rainy neon street with reflective asphalt and ambient synth soundtrack",
     image: Images.heroCyberpunkChase,
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4",
+    videoUrl: Videos.sceneCyber,
     duration: "00:10",
     tag: "Sci-Fi Action",
     presetName: "Cyberpunk Action",
@@ -40,13 +41,13 @@ const VIDEO_CARDS = [
   },
   {
     id: 3,
-    title: "Modern luxury villa tour at golden sunset with warm lighting",
-    fullPrompt: "Smooth architectural interior video tour gliding through modern luxury villa with chill background music",
+    title: "Majestic alpine wildlife running across snowy mountain valley",
+    fullPrompt: "Ultra slow-motion cinematic tracking shot of horses galloping across snowy alpine valley in 8K resolution",
     image: Images.heroArchitecturalTour,
-    videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+    videoUrl: Videos.snowHorses,
     duration: "00:07",
-    tag: "Architectural Tour",
-    presetName: "Interior Orbit",
+    tag: "Alpine Wildlife",
+    presetName: "Alpine Motion",
     audioSynced: true,
   },
 ];
@@ -206,19 +207,30 @@ export default function HeroSection() {
                     onClick={() => handleSelectPreset(idx)}
                   >
                     <div className="card-media-wrapper">
-                      {card.videoUrl ? (
+                      {typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
                         <video
-                          ref={(el) => (videoRefs.current[card.id] = el)}
+                          ref={(el) => {
+                            if (el) {
+                              videoRefs.current[card.id] = el;
+                              el.muted = true;
+                              el.defaultMuted = true;
+                              el.play().catch(() => {});
+                            }
+                          }}
                           src={card.videoUrl}
-                          poster={card.image}
                           autoPlay
                           loop
                           muted
                           playsInline
+                          preload="auto"
                           className="theater-media"
+                          onLoadedMetadata={(e) => {
+                            e.target.muted = true;
+                            e.target.play().catch(() => {});
+                          }}
                         />
                       ) : (
-                        <img src={card.image} alt={card.title} className="theater-media" />
+                        <img src={card.videoUrl || card.image} alt={card.title} className="theater-media" />
                       )}
 
                       <div className="theater-media-overlay" />

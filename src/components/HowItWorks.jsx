@@ -12,6 +12,7 @@ import {
   ChevronDown 
 } from 'lucide-react';
 import { Images } from '../assets/images';
+import { Videos } from '../assets/videos';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 const STEPS_CARDS = [
@@ -26,6 +27,7 @@ const STEPS_CARDS = [
     glowColor: 'rgba(192, 132, 252, 0.55)',
     borderColor: '#c084fc',
     image: Images.howStep1Storyboard,
+    videoUrl: Videos.sceneQuantum,
     previewBadge: 'Prompt to Storyboard',
     icon: Clapperboard,
   },
@@ -40,6 +42,7 @@ const STEPS_CARDS = [
     glowColor: 'rgba(56, 189, 248, 0.55)',
     borderColor: '#38bdf8',
     image: Images.howStep2CameraHUD,
+    videoUrl: Videos.coastalDrone,
     previewBadge: 'Physics & Optics',
     icon: Camera,
   },
@@ -54,7 +57,7 @@ const STEPS_CARDS = [
     glowColor: 'rgba(234, 179, 8, 0.6)',
     borderColor: '#eab308',
     image: Images.howStep3SyncedVideo,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    videoUrl: Videos.snowHorses,
     previewBadge: 'Neural Synthesis',
     icon: AudioLines,
   },
@@ -69,7 +72,7 @@ const STEPS_CARDS = [
     glowColor: 'rgba(244, 63, 94, 0.55)',
     borderColor: '#f43f5e',
     image: Images.heroCyberpunkChase,
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+    videoUrl: Videos.deepOceans,
     previewBadge: 'Cinema Ready',
     icon: Share2,
   },
@@ -301,18 +304,29 @@ export default function HowItWorks() {
               >
                 {/* Media Content */}
                 <div className="wheel-card-media-box">
-                  {card.videoUrl ? (
+                  {typeof card.videoUrl === 'string' && (card.videoUrl.endsWith('.mp4') || card.videoUrl.endsWith('.webm')) ? (
                     <video
+                      ref={(el) => {
+                        if (el) {
+                          el.muted = true;
+                          el.defaultMuted = true;
+                          el.play().catch(() => {});
+                        }
+                      }}
                       src={card.videoUrl}
-                      poster={card.image}
                       autoPlay
                       loop
                       muted
                       playsInline
+                      preload="auto"
                       className="wheel-card-media"
+                      onLoadedMetadata={(e) => {
+                        e.target.muted = true;
+                        e.target.play().catch(() => {});
+                      }}
                     />
                   ) : (
-                    <img src={card.image} alt={card.headline} className="wheel-card-media" />
+                    <img src={card.videoUrl || card.image} alt={card.headline} className="wheel-card-media" loading="lazy" />
                   )}
 
                   <div className="wheel-card-overlay" />

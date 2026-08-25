@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TechnologyHero.css';
 import { Sparkles, ArrowRight, Check, Zap, Shield, Cpu, Layers } from 'lucide-react';
 import Images from '../../assets/images';
+import { Videos } from '../../assets/videos';
 
 const SAMPLE_PROMPTS = [
   {
@@ -10,6 +11,7 @@ const SAMPLE_PROMPTS = [
     latency: "1.4s",
     resolution: "4K 60FPS Video",
     image: Images.techFujiArtwork,
+    videoUrl: Videos.coastalDrone,
     tag: "Cinematic Film (4K)"
   },
   {
@@ -18,6 +20,7 @@ const SAMPLE_PROMPTS = [
     latency: "1.1s",
     resolution: "4K 60FPS Video",
     image: Images.bannerScifiSingularity,
+    videoUrl: Videos.sceneCyber,
     tag: "Sci-Fi Video (4K)"
   },
   {
@@ -26,6 +29,7 @@ const SAMPLE_PROMPTS = [
     latency: "1.8s",
     resolution: "4K 60FPS Video",
     image: Images.galleryWatch,
+    videoUrl: Videos.finishLine,
     tag: "Commercial Ad (4K)"
   },
   {
@@ -34,6 +38,7 @@ const SAMPLE_PROMPTS = [
     latency: "1.2s",
     resolution: "4K 60FPS Video",
     image: Images.bannerEnchantedForest,
+    videoUrl: Videos.sceneQuantum,
     tag: "Fantasy Video (4K)"
   }
 ];
@@ -125,11 +130,25 @@ export default function TechnologyHero({ onExploreStack, onSeeArchitecture }) {
             <div className="tech-card-ambient-border"></div>
 
             <div className="tech-card-image-wrapper">
-              <img 
-                src={activeSample.image} 
-                alt="AI Generated Masterpiece" 
-                className={`tech-hero-main-img ${isGenerating ? 'generating-pulse' : ''}`}
-              />
+              {typeof activeSample.videoUrl === 'string' && (activeSample.videoUrl.endsWith('.mp4') || activeSample.videoUrl.endsWith('.webm')) ? (
+                <video
+                  key={activeSample.tag}
+                  src={activeSample.videoUrl}
+                  poster={activeSample.image}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className={`tech-hero-main-img ${isGenerating ? 'generating-pulse' : ''}`}
+                />
+              ) : (
+                <img 
+                  key={activeSample.tag}
+                  src={activeSample.videoUrl || activeSample.image} 
+                  alt="AI Generated Masterpiece" 
+                  className={`tech-hero-main-img ${isGenerating ? 'generating-pulse' : ''}`}
+                />
+              )}
               
               {/* Dynamic Metadata Badge Overlay */}
               <div className="tech-image-meta-badge">
