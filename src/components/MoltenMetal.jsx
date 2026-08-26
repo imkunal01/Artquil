@@ -134,7 +134,7 @@ const MoltenMetal = ({
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 1.25)
+      dpr: Math.min(window.devicePixelRatio || 1, 1.0)
     });
 
     const gl = renderer.gl;
@@ -154,7 +154,7 @@ const MoltenMetal = ({
         iResolution: { value: new Float32Array([1, 1]) },
         uSpeed: { value: 0.35 },
         uScale: { value: 4 },
-        uDetail: { value: 3 },
+        uDetail: { value: 2 },
         uGlow: { value: 1.6 },
         uCoreSize: { value: 0.1 },
         uSwirl: { value: 1 },
@@ -204,8 +204,8 @@ const MoltenMetal = ({
       targetMouse[0] = 0.5;
       targetMouse[1] = 0.5;
     };
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
+    canvas.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     let raf = 0;
     let isVisible = true;
@@ -213,6 +213,7 @@ const MoltenMetal = ({
     const t0 = performance.now();
 
     const loop = t => {
+      if (!isVisible || !isPageVisible) return;
       program.uniforms.iTime.value = (t - t0) * 0.001;
       currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
       currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);

@@ -15,6 +15,7 @@ import PricingPlans from './components/PricingPlans';
 import FAQSection from './components/FAQSection';
 import CTABanner from './components/CTABanner';
 import Footer from './components/Footer';
+import { useSmoothScroll, smoothScrollTo } from './hooks/useSmoothScroll';
 
 // Code-split secondary routes & modals for instant initial bundle delivery
 const ProductPage = lazy(() => import('./components/ProductPage/ProductPage'));
@@ -55,6 +56,9 @@ function parseCurrentRoute() {
 }
 
 function App() {
+  // Initialize buttery smooth momentum scrolling engine
+  useSmoothScroll();
+
   const [currentPage, setCurrentPage] = useState(parseCurrentRoute);
 
   // Authentication Modal State
@@ -91,21 +95,19 @@ function App() {
       window.history.pushState(null, '', targetId ? `#${targetId}` : '#');
       if (targetId) {
         setTimeout(() => {
-          const el = document.getElementById(targetId);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          smoothScrollTo(`#${targetId}`);
         }, 100);
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        smoothScrollTo(0);
       }
     } else {
       window.history.pushState(null, '', `#${page}`);
       if (targetId) {
         setTimeout(() => {
-          const el = document.getElementById(targetId);
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          smoothScrollTo(`#${targetId}`);
         }, 100);
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        smoothScrollTo(0);
       }
     }
   };

@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import './StyleShowcase.css';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 import { Images } from '../assets/images';
 import { Videos } from '../assets/videos';
+import { ChevronLeft, ChevronRight, Sparkles, Play, Pause } from 'lucide-react';
 
 const SHOWCASE_ITEMS = [
   {
@@ -11,6 +11,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Dynamic tracking shots, volumetric smoke explosions, and Hollywood filmic color grading.',
     gif: Videos.gifFinishLine,
     image: Images.styleCinemaAction,
+    tag: 'Cinematic',
+    fps: '60 FPS',
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Luxury product macro shots with slow-motion fluid physics, studio rim lights, and soft speculars.',
     gif: Videos.gifFlower,
     image: Images.styleProductCommercial,
+    tag: 'Commercial',
+    fps: '4K Macro',
   },
   {
     id: 3,
@@ -25,6 +29,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Dynamic graphic rhythms, bold 3D typographic animation, and beat-synced cuts for social ads.',
     gif: Videos.gifCldMotion,
     image: Images.styleTypographyMotion,
+    tag: 'Motion Graphic',
+    fps: '60 FPS',
   },
   {
     id: 4,
@@ -32,6 +38,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Vibrant 3D character animation with natural physics, lifelike motion rigs, and synced audio.',
     gif: Videos.gifPedestrians,
     image: Images.style3DCharacter,
+    tag: '3D Character',
+    fps: 'Synced Audio',
   },
   {
     id: 5,
@@ -39,6 +47,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Golden hour cinematic FPV drone flight sweeping over coastal ocean surf with lens flare.',
     gif: Videos.gifCoastal,
     image: Images.heroDroneWaterfall,
+    tag: 'Drone FPV',
+    fps: '4K HDR',
   },
   {
     id: 6,
@@ -46,6 +56,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Ultra-slow-motion liquid pours, golden crema swirls, and appetizing lifestyle commercials.',
     gif: Videos.gifFlower,
     image: Images.styleFoodSlowmo,
+    tag: 'Slow-Mo',
+    fps: '120 FPS',
   },
   {
     id: 7,
@@ -53,6 +65,8 @@ const SHOWCASE_ITEMS = [
     desc: 'BBC Earth-style high-speed wildlife tracking, snowy mountain landscapes, and natural depth.',
     gif: Videos.gifSnowHorses,
     image: Images.styleNatureWildlife,
+    tag: 'Wildlife 8K',
+    fps: 'ProRes 4K',
   },
   {
     id: 8,
@@ -60,6 +74,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Majestic sea turtle gliding through crystalline turquoise waters and sunlit coral reef caustics.',
     gif: Videos.gifSeaTurtle,
     image: Images.styleNatureWildlife,
+    tag: 'Underwater',
+    fps: 'Fluid Sim',
   },
   {
     id: 9,
@@ -67,6 +83,8 @@ const SHOWCASE_ITEMS = [
     desc: 'High-octane anime combat sequences with speed lines, dynamic sakuga energy, and neon slashes.',
     gif: Videos.gifQuantum,
     image: Images.styleAnimeAction,
+    tag: 'Anime Sakuga',
+    fps: '24 FPS Key',
   },
   {
     id: 10,
@@ -74,6 +92,8 @@ const SHOWCASE_ITEMS = [
     desc: 'Nostalgic synthwave aesthetics, glowing wireframe digital horizons, and analog tape scanlines.',
     gif: Videos.gifCyber,
     image: Images.styleVHSSynthwave,
+    tag: 'Synthwave',
+    fps: 'Scanline FX',
   },
   {
     id: 11,
@@ -81,6 +101,8 @@ const SHOWCASE_ITEMS = [
     desc: 'High-octane urban night pursuit with dynamic anamorphic lens flare and realistic motion blur.',
     gif: Videos.gifSupercar,
     image: Images.bannerSupercarDrift,
+    tag: 'Action Drift',
+    fps: '60 FPS UHD',
   },
 ];
 
@@ -88,6 +110,7 @@ function ShowcaseVideoCard({ item }) {
   return (
     <div className="showcase-card">
       <div className="showcase-image-wrapper">
+        {/* Animated GIF / High-Res image */}
         <img
           src={item.gif || item.image}
           alt={item.title}
@@ -95,6 +118,14 @@ function ShowcaseVideoCard({ item }) {
           loading="lazy"
           decoding="async"
         />
+
+        {/* Badges Overlay */}
+        <div className="showcase-card-badges">
+          <span className="badge-tag">{item.tag}</span>
+          <span className="badge-fps">{item.fps}</span>
+        </div>
+
+        <div className="showcase-img-vignette" />
       </div>
 
       <div className="showcase-card-body">
@@ -107,36 +138,98 @@ function ShowcaseVideoCard({ item }) {
 
 export default function StyleShowcase() {
   const sectionRef = useRef(null);
+  const [isManualPaused, setIsManualPaused] = useState(false);
+  const [isOffscreen, setIsOffscreen] = useState(false);
 
-  // Measure scroll progress as this section moves naturally through the viewport
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
+  // Pause rendering when scrolled far offscreen to save GPU
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-  // Smooth physics-based horizontal translation on page scroll
-  const rawX = useTransform(scrollYProgress, [0, 1], ['0px', '-1400px']);
-  const x = useSpring(rawX, { stiffness: 120, damping: 30, restDelta: 0.01 });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOffscreen(!entry.isIntersecting);
+      },
+      { rootMargin: '200px 0px 200px 0px', threshold: 0 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="style-showcase-section" id="product" ref={sectionRef}>
+    <section 
+      className="style-showcase-section" 
+      id="product" 
+      ref={sectionRef}
+      aria-label="Artquil AI Video Style Showcase"
+    >
       <div className="showcase-container">
         
-        {/* Header */}
-        <div className="showcase-header">
-          <span className="showcase-eyebrow">MADE WITH ARTQUIL AI</span>
-          <h2 className="showcase-headline">
-            One prompt. <span className="highlight-script">Any video style</span> you can imagine.
-          </h2>
+        {/* Header with Navigation Controls */}
+        <div className="showcase-header-wrapper">
+          <div className="showcase-header">
+            <div className="showcase-eyebrow-row">
+              <span className="showcase-eyebrow">
+                <Sparkles size={13} className="eyebrow-sparkle" />
+                MADE WITH ARTQUIL AI
+              </span>
+              <span className="showcase-count-pill">11 Styles</span>
+            </div>
+            <h2 className="showcase-headline">
+              One prompt. <span className="highlight-script">Any video style</span> you can imagine.
+            </h2>
+          </div>
+
+          {/* Interactive Play/Pause Indicator */}
+          <div className="showcase-controls">
+            <button 
+              className={`showcase-play-btn ${isManualPaused ? 'paused' : ''}`}
+              onClick={() => setIsManualPaused((prev) => !prev)}
+              aria-label={isManualPaused ? 'Resume auto-scroll' : 'Pause auto-scroll'}
+              title={isManualPaused ? 'Resume auto-scroll' : 'Pause auto-scroll'}
+            >
+              {isManualPaused ? <Play size={13} fill="currentColor" /> : <Pause size={13} fill="currentColor" />}
+              <span>{isManualPaused ? 'Paused' : 'Auto-Scrolling'}</span>
+            </button>
+          </div>
         </div>
 
-        {/* Full-bleed edge-to-edge Horizontal Track */}
+        {/* Full-Bleed Viewport with Gradient Edge Masks */}
         <div className="showcase-track-viewport">
-          <motion.div style={{ x }} className="showcase-motion-track">
-            {SHOWCASE_ITEMS.map((item) => (
-              <ShowcaseVideoCard key={item.id} item={item} />
-            ))}
-          </motion.div>
+          {/* Edge Blur Gradients */}
+          <div className="showcase-edge-fade edge-fade-left" />
+          <div className="showcase-edge-fade edge-fade-right" />
+
+          {/* Continuous GPU-Composited Pure CSS Infinite Marquee Track */}
+          <div 
+            className={`showcase-marquee-track ${isOffscreen || isManualPaused ? 'is-paused' : ''}`}
+          >
+            {/* Set 1 */}
+            <div className="showcase-card-group">
+              {SHOWCASE_ITEMS.map((item) => (
+                <ShowcaseVideoCard 
+                  key={`track1-${item.id}`} 
+                  item={item} 
+                />
+              ))}
+            </div>
+
+            {/* Set 2 (Identical clone for seamless continuous infinite glide) */}
+            <div className="showcase-card-group" aria-hidden="true">
+              {SHOWCASE_ITEMS.map((item) => (
+                <ShowcaseVideoCard 
+                  key={`track2-${item.id}`} 
+                  item={item} 
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Hint */}
+        <div className="showcase-footer-hint">
+          <span>💡 Hover any card to pause & inspect cinematic lighting and fluid physics</span>
         </div>
 
       </div>

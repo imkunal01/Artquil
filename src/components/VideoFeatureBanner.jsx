@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './VideoFeatureBanner.css';
-import { Waves, Sparkles } from 'lucide-react';
+import { Waves, Sparkles, Play, Pause, VolumeX, Volume2 } from 'lucide-react';
 import { Videos } from '../assets/videos';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import RippleDistortion from './RippleDistortion';
 
 const SCENES = [
   {
@@ -12,7 +11,6 @@ const SCENES = [
     prompt: 'Hyper-detailed cinematic video generation with volumetric lighting, fluid motion dynamics, and synchronized sound in 4K 60fps',
     src: Videos.v1,
     tint: '#06b6d4',
-    swirl: 1.3,
   },
   {
     id: 'video-2',
@@ -20,25 +18,48 @@ const SCENES = [
     prompt: 'Futuristic cinematic journey through rainy neon metropolitan highway with optical refractions and ambient synth soundtrack',
     src: Videos.v2,
     tint: '#a855f7',
-    swirl: 1.4,
   },
 ];
 
 export default function VideoFeatureBanner() {
   const [activeSceneIndex, setActiveSceneIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const [sectionRef, isVisible] = useScrollReveal({ threshold: 0.15 });
-
-  // Auto change video scene every 7s (pauses on hover so user can play with ripple freely)
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setActiveSceneIndex((prev) => (prev + 1) % SCENES.length);
-    }, 7000);
-    return () => clearInterval(interval);
-  }, [isPaused]);
+  const videoRef = useRef(null);
 
   const currentScene = SCENES[activeSceneIndex];
+
+  // Pause video playback when section is scrolled out of view to save battery and RAM
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isVisible && isPlaying) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [isVisible, isPlaying, activeSceneIndex]);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isPlaying) {
+      video.pause();
+      setIsPlaying(false);
+    } else {
+      video.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setIsMuted(video.muted);
+  };
 
   return (
     <section className="video-feature-banner-section" id="technology" ref={sectionRef}>
@@ -48,7 +69,7 @@ export default function VideoFeatureBanner() {
         <div className={`banner-header-center reveal-init ${isVisible ? 'reveal-visible' : ''}`}>
           <div className="banner-eyebrow">
             <Waves size={14} className="eyebrow-wave-icon" />
-            <span>INTERACTIVE NEURAL DIFFUSION ENGINE</span>
+            <span>NEURAL VIDEO SYNTHESIS ENGINE</span>
           </div>
 
           <h2 className="banner-headline">
@@ -56,7 +77,7 @@ export default function VideoFeatureBanner() {
           </h2>
 
           <p className="banner-subtitle">
-            Move your cursor across the canvas below to interact with the neural latent space. Fluid light refractions and caustics simulate AI frame generation physics in real-time across multiple video models.
+            Artquil synthesizes high-fidelity 4K 60fps cinematic video frames with realistic physics, lighting depth, and temporal coherence in seconds.
           </p>
 
           {/* Clean Glass Scene Selector Pills */}
@@ -65,7 +86,10 @@ export default function VideoFeatureBanner() {
               <button
                 key={scene.id}
                 className={`scene-pill-btn ${activeSceneIndex === idx ? 'active' : ''}`}
-                onClick={() => setActiveSceneIndex(idx)}
+                onClick={() => {
+                  setActiveSceneIndex(idx);
+                  setIsPlaying(true);
+                }}
                 style={{
                   borderColor: activeSceneIndex === idx ? scene.tint : undefined,
                   boxShadow: activeSceneIndex === idx ? `0 0 16px ${scene.tint}55` : undefined,
@@ -77,45 +101,64 @@ export default function VideoFeatureBanner() {
           </div>
         </div>
 
-        {/* Grand Big Glass Canvas Stage */}
-        <div 
-          className={`banner-canvas-stage reveal-init delay-200 ${isVisible ? 'reveal-visible' : ''}`}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
+        {/* Grand Big Glass Stage */}
+        <div className={`banner-canvas-stage reveal-init delay-200 ${isVisible ? 'reveal-visible' : ''}`}>
           {/* Ambient Glow Aura Matching Active Scene */}
           <div 
             className="canvas-ambient-aura"
-            style={{ background: `radial-gradient(circle, ${currentScene.tint}40 0%, transparent 70%)` }}
+            style={{ background: `radial-gradient(circle, ${currentScene.tint}35 0%, transparent 70%)` }}
           />
 
           {/* Grand Glass Frame Container */}
           <div className="glass-canvas-frame">
-            <div className="ripple-canvas-wrapper">
-              <RippleDistortion
+            <div className="banner-video-wrapper">
+              <video
+                ref={videoRef}
                 key={currentScene.id}
                 src={currentScene.src}
-                brushSize={190}
-                strength={0.24}
-                swirl={currentScene.swirl}
-                rings={5}
-                spread={4.5}
-                fade={2.8}
-                spacing={10}
-                dispersion={0.09}
-                glint={0.3}
-                tint={currentScene.tint}
-                tintAmount={0.15}
-                grayscale={false}
-                highlightColor="#ffffff"
-                trigger="both"
-                clickStrength={2.8}
-                quality="high"
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                preload="metadata"
+                className="banner-video-media"
               />
+
+              {/* Video Gradient Overlay */}
+              <div className="banner-video-overlay" />
+
+              {/* Video Floating HUD Badges */}
+              <div className="banner-hud-top">
+                <div className="hud-pill hud-model-pill">
+                  <span className="hud-dot" />
+                  <span>Artquil V3 Cinema Engine</span>
+                </div>
+                <div className="hud-pill hud-res-pill">
+                  <span>4K UHD • 60 FPS</span>
+                </div>
+              </div>
+
+              {/* Video Quick Controls */}
+              <div className="banner-video-controls">
+                <button 
+                  className="video-ctrl-btn" 
+                  onClick={togglePlay}
+                  aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                >
+                  {isPlaying ? <Pause size={16} /> : <Play size={16} fill="currentColor" />}
+                </button>
+                <button 
+                  className="video-ctrl-btn" 
+                  onClick={toggleMute}
+                  aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                >
+                  {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Subtle Clean Prompt Caption Below Frame */}
+          {/* Prompt Caption Below Frame */}
           <div className="canvas-bottom-caption">
             <Sparkles size={15} className="caption-sparkle" style={{ color: currentScene.tint }} />
             <span className="caption-prompt">"{currentScene.prompt}"</span>
