@@ -2,7 +2,6 @@
 import heroDroneWaterfall from './hero_drone_waterfall.jpg';
 import heroCyberpunkChase from './hero_cyberpunk_chase.jpg';
 import heroLuxuryCommercial from './hero_luxury_commercial.jpg';
-import heroArchitecturalTour from './hero_architectural_tour.jpg';
 
 // 2. Video Feature Banner / Interactive Diffusion Canvas
 import bannerScifiSingularity from './banner_scifi_singularity.jpg';
@@ -10,7 +9,6 @@ import bannerSupercarDrift from './banner_supercar_drift.jpg';
 import bannerBioluminescentOcean from './banner_bioluminescent_ocean.jpg';
 import bannerCyberCyborg from './banner_cyber_cyborg.jpg';
 import bannerEnchantedForest from './banner_enchanted_forest.jpg';
-import bannerLiquidSplash from './banner_liquid_splash.jpg';
 
 // 3. How It Works Pipeline
 import howStep1Storyboard from './how_step1_storyboard.jpg';
@@ -42,22 +40,15 @@ import avatarPriya from './avatar_priya.jpg';
 import avatarArjun from './avatar_arjun.jpg';
 import avatarMeera from './avatar_meera.jpg';
 
-// Legacy compatibility imports
-import heroForest from './hero_forest_1787660651092.jpg';
+// 7. Active legacy assets
 import heroSneaker from './hero_sneaker_1787660674902.jpg';
 import heroVilla from './hero_villa_1787660696745.jpg';
 import heroMascot from './hero_mascot_1787660719388.jpg';
 import galleryWatch from './gallery_watch_1787660744791.jpg';
-import galleryTypography from './gallery_typography_1787660772568.jpg';
-import galleryRobot from './gallery_robot_1787660924102.jpg';
-import videoCoffee from './video_coffee_1787661025213.jpg';
 import videoCyberpunk from './video_cyberpunk_1787661063058.jpg';
-import videoIsland from './video_island_1787660986494.jpg';
 import videoPerfume from './video_perfume_1787660953928.jpg';
-import whoCreators from './who_creators_1787663123508.jpg';
-import whoMarketing from './who_marketing_1787663165347.jpg';
 
-// 7. Technology Architecture & Models
+// 8. Technology Architecture & Models
 import techFujiArtwork from './tech_fuji_artwork.jpg';
 import techPipelineFlow from './tech_pipeline_flow.jpg';
 import techGpuMatrix from './tech_gpu_matrix.jpg';
@@ -67,7 +58,6 @@ export const Images = {
   heroDroneWaterfall,
   heroCyberpunkChase,
   heroLuxuryCommercial,
-  heroArchitecturalTour,
 
   // Interactive Neural Diffusion Canvas
   bannerScifiSingularity,
@@ -75,14 +65,13 @@ export const Images = {
   bannerBioluminescentOcean,
   bannerCyberCyborg,
   bannerEnchantedForest,
-  bannerLiquidSplash,
 
   // How It Works Pipeline
   howStep1Storyboard,
   howStep2CameraHUD,
   howStep3SyncedVideo,
 
-  // Video Styles Showcase (8 Genres)
+  // Video Styles Showcase
   styleCinemaAction,
   styleProductCommercial,
   styleTypographyMotion,
@@ -112,17 +101,12 @@ export const Images = {
   techPipelineFlow,
   techGpuMatrix,
 
-  // Legacy mappings for backwards safety
-  heroForest,
+  // Active legacy mappings
   heroSneaker,
   heroVilla,
   heroMascot,
   galleryWatch,
-  galleryTypography,
-  galleryRobot,
-  videoCoffee,
   videoCyberpunk,
-  videoIsland,
   videoPerfume,
   whoCreators: audienceCreatorStudio,
   whoMarketing: audienceMarketingTeam,

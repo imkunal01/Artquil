@@ -3,7 +3,6 @@ import video1 from './video/video1.mp4';
 import video2 from './video/video2.mp4';
 
 // Style Showcase Animated GIFs
-import gifDeepOceans from './video/1787687190150_deep_oceans.gif';
 import gifFinishLine from './video/1787687190152_finish_line_action.gif';
 import gifFlower from './video/1787687190153_flower_timelapse.gif';
 import gifSeaTurtle from './video/1787687190153_sea_turtle_ocean.gif';
@@ -35,7 +34,6 @@ export const Videos = {
   gifQuantum,
   gifCyber,
   gifSupercar,
-  gifDeepOceans,
 
   // Named Aliases
   coastalDrone: video1,
@@ -50,6 +48,13 @@ export const Videos = {
   sceneCldMotion: video1,
   sceneFlower: video2,
   scenePedestrians: video1,
+  snowHorses: video2,
+  deepOceans: video1,
+  supercar: video2,
+  finishLine: video2,
+  seaTurtle: video1,
+  flowerTimelapse: video2,
+  cldMotion: video1,
 };
 
 export default Videos;
